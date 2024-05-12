@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 01:04:02 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:56:25 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	shlvlup(char **m_envp)
 	int		i;
 
 	shlvl_envp = FIND_Var_Envp(m_envp, "SHLVL", 0);
-	printf("cool la 1\n");
-
 	if(!shlvl_envp)
 		return ;
 	i = 0;
@@ -93,7 +91,7 @@ void	ft_executable(t_command *command, char **m_envp, int *wstatus)
 	struct stat path_stat;
 	int is_directory;
 
-	shlvlup(m_envp);
+	//shlvlup(m_envp);
 	execve(command->cmd, command->arg, m_envp);
 	(*wstatus) = errno;
 	stat(command->cmd, &path_stat);

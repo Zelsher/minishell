@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/12 18:30:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:38:15 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 	if(ft_strcmp(command->cmd, "cd") == 0)
 		return(ft_cd(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
-		return (ft_exit(command, m_envp, wstatus), 0);
+		return (ft_exit(command, m_envp, wstatus), 0); 
 	else if (ft_strcmp(command->cmd, "export") == 0)
 		return (ft_export(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
