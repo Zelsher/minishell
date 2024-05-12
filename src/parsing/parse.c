@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 00:11:10 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:12:36 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ t_command	*CMD_Parse(char *new_command, char **m_envp, int *wstatus)
 	command = RECURSIVE_Parse(new_command, m_envp, 0);
 	if (!command)
 		ft_free(NULL, new_command, m_envp, 1);
-	// ft_print_command_tree(command, "tree", 1);
+	ft_print_command_tree(command, "tree", 1);
 	if (!CMD_Verifier(command, wstatus))
 	{
 		if (!UPDATE_Wstatus(m_envp, wstatus, 0))

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 00:08:26 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:30:13 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	minishell(char **m_envp)
 		g_exec_pid = 0;
 		if (!new_command)
 			ft_free(NULL, NULL, m_envp, 1);
-		if (new_command[0] != 0)
+		if (new_command[0] != 0 && !IS_Last_Cmd(new_command))
 			add_history(new_command);
 		if (new_command)
 			USE_Command(new_command, &wstatus, m_envp);

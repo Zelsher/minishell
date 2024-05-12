@@ -2,6 +2,8 @@ NAME			= minishell
 
 INC				= inc/
 SRC_DIR			= src/
+SRC_PARSE		= parsing/
+SRC_HEREDOC		= heredoc/
 OBJ_DIR			= obj/
 LIBFT			= Libft/libft.a
 
@@ -11,17 +13,17 @@ RM				= rm -f
 
 SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)minishell.c \
-					$(SRC_DIR)parse.c \
 					$(SRC_DIR)exec.c \
-					$(SRC_DIR)parsing_utils.c \
-					$(SRC_DIR)arg_malloc.c \
-					$(SRC_DIR)cmd_filler.c \
 					$(SRC_DIR)ft_free.c \
 					$(SRC_DIR)signal.c \
 					$(SRC_DIR)envp.c \
-					$(SRC_DIR)heredoc.c \
-					$(SRC_DIR)heredoc_utils.c \
-					$(SRC_DIR)history.c
+					$(SRC_DIR)history.c \
+					$(SRC_DIR)$(SRC_PARSE)parse.c \
+					$(SRC_DIR)$(SRC_PARSE)parsing_utils.c \
+					$(SRC_DIR)$(SRC_PARSE)arg_malloc.c \
+					$(SRC_DIR)$(SRC_PARSE)cmd_filler.c \
+					$(SRC_DIR)$(SRC_HEREDOC)heredoc.c \
+					$(SRC_DIR)$(SRC_HEREDOC)heredoc_utils.c \
 
 
 OBJ 			= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))

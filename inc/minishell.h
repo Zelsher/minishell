@@ -53,32 +53,38 @@ typedef struct s_parse
 
 extern int g_exec_pid;
 
+/*Parsing_utils*/
 t_command	*CMD_Construct(char *new_command);
 void		PARSE_Construct(t_parse *parse);
-
 void		skip_ispace(char *new_command, t_parse *parse);
 void    	ft_print_command_tree(t_command *command, char *branch, int i);
 
 char		*pathfinder(t_command *command, char **m_envp, int *flag);
 
+/*Parsing*/
 t_command	*PUT_P_Arg(t_command *command);
 int 		CMD_Verifier(t_command *command, int *wstatus);
 char		*ARG_Malloc(t_command *command, char *new_command, char **m_envp);
 t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp);
 t_command   *CMD_Parse(char *new_command, char **m_envp, int *verif);
 
+/*ENVP*/
 void		ENVP_Print(char	**m_envp);
 void		ENVP_Cpy(char **m_envp, char **envp);
 char		*FIND_Var_Envp(char **m_envp, char *var, int verif);
 void		UNSET_Envp(char **m_envp, char *cmd);
 int			EXPORT_Envp(char **m_envp, char *cmd);
 
+/*Heredoc*/
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
 void		HEREDOC(t_command *command, char **m_envp, int *wstatus);
 
-
+/*History*/
+int			IS_Last_Cmd(const char *new_command);
 void		PRINT_History();
+
+/*exec*/
 void		printerr(int fd, char *name, const char *error, int flag);
 void		ft_exec(t_command *command, char **envp, int *wstatus);
 void		ft_cd(t_command *command, char **m_envp, int *wstatus);
@@ -87,9 +93,11 @@ void		ft_export(t_command *command, char **m_envp, int *wstatus);
 void		ft_unset(t_command *command, char **m_envp);
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 
+/*Signal*/
 void		SIGNAL_Handler(int signal);
 int			INIT_Receive_Signal(struct sigaction *sa);
 
+/*Free*/
 void		FREE_Command(t_command *command);
 void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
 
