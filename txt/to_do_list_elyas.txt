@@ -4,3 +4,7 @@ command1 -r --a "essaie" file1 | command2 'ten"tative' -l file2 && command3 'tes
 command1 -r --a file1 | command 2 -l file2 ; command3 -o file3
 
 echo '$?' "$?" "la $PATH ' $" 
+
+free de lexec
+pofiner le heredoc
+signaux, readline, dans le heredoc aussi

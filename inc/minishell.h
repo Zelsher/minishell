@@ -1,18 +1,13 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#define TC_B_RED  "\x1B[0;31m"
-#define TC_NRM  "\x1B[0m"
-#define TC_RED  "\x1B[1;31m"
-#define TC_GRN  "\x1B[1;32m"
-#define TC_YEL  "\x1B[1;33m"
-#define TC_BLU  "\x1B[1;34m"
-#define TC_MAG  "\x1B[1;35m"
-#define TC_CYN  "\x1B[1;36m"
-#define TC_WHT  "\x1B[1;37m"
-
+#ifndef M_ENVP_LEN
 #  define M_ENVP_LEN 100
+# endif
+
+#ifndef CMD_ARG_LEN
 #  define CMD_ARG_LEN 201
+# endif
 
 #include "../Libft/libft.h"
 #include <dirent.h>
@@ -34,7 +29,7 @@ typedef struct s_command
 	char				invalid_token;
 	char				token;//correspond au token, et [&& = e] [|| = p] [>> = r] les autres donneront u
 	char				*cmd;
-	char				**heredoc;
+	char				*heredoc;
 	char				*arg[201];
 	int					quote[201];
 	char				*p_file;
@@ -64,7 +59,7 @@ void		print_cmd(t_command *command);
 t_command	*PUT_P_Arg(t_command *command);
 int 		CMD_Verifier(t_command *command, int *wstatus);
 char		*ARG_Malloc(t_command *command, char *new_command, char **m_envp);
-t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp);
+t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char token);
 t_command   *CMD_Parse(char *new_command, char **m_envp, int *verif);
 
 /*ENVP*/
@@ -77,7 +72,7 @@ int			EXPORT_Envp(char **m_envp, char *cmd);
 /*Heredoc*/
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
-void		HEREDOC(t_command *command, char **m_envp, int *wstatus);
+void		HEREDOC(t_command *command, char **m_envp, t_parse *parse, char *new_command);
 
 /*History*/
 int			IS_Last_Cmd(const char *new_command);

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:36:19 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:17:53 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 		redir_output(command, m_envp, wstatus);
 	else if (command->token == 'r')
 		redir_output_append(command, m_envp, wstatus);
-	else if (command->token == 'h')
-		HEREDOC(command, m_envp, wstatus);
+	//else if (command->token == 'h')
+		//HEREDOC(command, m_envp, wstatus);
 	else if (built_in(command, m_envp, wstatus) == 1)
 		ft_free(command, NULL, m_envp, (*wstatus));
 	else if (command->cmd[0] == '.' && command->cmd[1] == '/' )

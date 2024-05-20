@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:37:22 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/21 01:16:02 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	TOKEN_Identifier(char *new_command, t_command *command, int *j, int i)
 		command->token = 'e';
 	else if (new_command[0] == '|' && new_command[1] == '|')
 		command->token = 'p';
-	else if (is_in(new_command[1], "<>|&"))
+	else if (is_in(new_command[1], "<>|&") || 0)//mettre pr les new_line (syntax error near unexpected token `newline')
 	{
 		command->token = 'u';
 		command->invalid_token = *new_command + 1;
@@ -89,7 +89,7 @@ int	REDIRECT_Init(t_command *command)
 }
 
 //Parcours la commande, si un token est trouver, la fonction est rappeler pour la string avant le token, et apres.
-t_command	*RECURSIVE_Parse(char *new_command, char **m_envp, int i)
+t_command	*RECURSIVE_Parse(char *new_command, char **m_envp, int i, char token)
 {
 	t_command	*command;
 
@@ -98,22 +98,23 @@ t_command	*RECURSIVE_Parse(char *new_command, char **m_envp, int i)
 		return (NULL);
 	if (TOKENER(new_command, command, &i, "|&"))
 	{
-		command->left = RECURSIVE_Parse(new_command, m_envp, 0);
-		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0);
+		command->left = RECURSIVE_Parse(new_command, m_envp, 0, command->token);
+		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0, command->token);
 		if (!command->left || !command->right)
 			return (FREE_Command(command), NULL);
 	}
 	if (TOKENER(new_command, command, &i, "<>"))
 	{
-		command->left = RECURSIVE_Parse(new_command, m_envp, 0);
-		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0);
+		command->left = RECURSIVE_Parse(new_command, m_envp, 0, 0);
+		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0, command->token);
 		if (!command->left || !command->right)
 			return (FREE_Command(command), NULL);
-		if ((command->token == '>' || command->token == '<' || command->token == 'r') && !REDIRECT_Init(command))
+		if (!REDIRECT_Init(command))
 			return (FREE_Command(command), NULL);
 	}
 	if (!command->token)
-		command = CMD_Filler(new_command, command, m_envp);
+		command = CMD_Filler(new_command, command, m_envp, token);
+	(void)token;
 	return (command);
 }
 
@@ -121,7 +122,7 @@ t_command	*CMD_Parse(char *new_command, char **m_envp, int *wstatus)
 {
 	t_command	*command;
 
-	command = RECURSIVE_Parse(new_command, m_envp, 0);
+	command = RECURSIVE_Parse(new_command, m_envp, 0, 0);
 	if (!command)
 		ft_free(NULL, new_command, m_envp, 1);
 	if (!CMD_Verifier(command, wstatus))

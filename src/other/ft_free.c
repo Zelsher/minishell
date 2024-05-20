@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:42:01 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/21 01:41:01 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ void	FREE_Command(t_command *command)
 	while (command->arg[i])
 	{
 		free(command->arg[i]);
+		command->arg[i] = NULL;
 		i++;
 	}
-	if (command->heredoc)
-		ft_free_double_tab(command->heredoc);
 	free(command);
 	return ;
 }
@@ -70,7 +69,9 @@ int	CMD_Verifier(t_command *command, int *wstatus)
 		(*wstatus) = command->invalid;
 	if (command->token == 'u')
 		return (ft_printf_error("minishell: syntax error near unexpected token `%d'\n", command->invalid_token), 0);
-	if ( (!command->token && !command->cmd))
+	else if (command->token == 'h')
+		command->token = '<';
+	else if ( (!command->token && !command->cmd))
 		return (0);
 	if (command->left)
 		verif = CMD_Verifier(command->left, wstatus);
@@ -192,10 +193,12 @@ void	print_cmd(t_command *command)
 {
 	static int	show;
 
-	if (!ft_strcmp(command->arg[0], "unshow"))
+	if (!command)
+		return ;
+	if (command->arg[0] && !ft_strcmp(command->arg[0], "unshow"))
 		show = 0;
 	if (show)
 		ft_print_command_tree(command, "tree", 1);
-	if (!ft_strcmp(command->arg[0], "show"))
+	if (command->arg[0] && !ft_strcmp(command->arg[0], "show"))
 		show = 1;
 }

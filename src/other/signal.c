@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 00:48:33 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/21 00:45:18 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void	SIGNAL_Handler(int signal)
 		g_exec_pid = -1;
 		return;
 	}
+	else if (g_exec_pid == -3)
+	{
+		rl_replace_line("", 1);
+		printf("\n>");
+		rl_redisplay();
+	}
+	if (g_exec_pid == 131)
+		write (1, "Quit (core dumped)", 18);
 	if (signal == SIGINT && g_exec_pid)
 		printf("\n");
 }

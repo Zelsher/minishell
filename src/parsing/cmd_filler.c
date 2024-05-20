@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:19:18 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/21 01:05:52 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,13 @@ void	UPDATE_Arg(t_command *command, t_parse *parse)
 	}
 }
 
-t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp)
+t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char token)
 {
 	t_parse	parse;
 
 	PARSE_Construct(&parse);
+	if (token == 'h')
+		HEREDOC(command, m_envp, &parse, new_command);
 	while (new_command[parse.i] && parse.j < 201)
 	{
 		//printf("\narg %ld\n_________________________\n\n", parse.j);
