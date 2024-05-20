@@ -85,13 +85,35 @@ int			IS_Last_Cmd(const char *new_command);
 void		PRINT_History();
 
 /*exec*/
-void		printerr(int fd, char *name, const char *error, int flag);
 void		ft_exec(t_command *command, char **envp, int *wstatus);
-void		ft_cd(t_command *command, char **m_envp, int *wstatus);
-void		ft_exit(t_command *command, char **m_envp, int *wstatus);
-void		ft_export(t_command *command, char **m_envp, int *wstatus);
-void		ft_unset(t_command *command, char **m_envp);
-int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
+
+/*Builtins*/
+void	ft_echo(t_command *command);
+void	ft_cd2(t_command *command, char **m_envp, int *wstatus);
+void	ft_cd(t_command *command, char **m_envp, int *wstatus);
+int		built_in(t_command *command, char **m_envp, int *wstatus);
+
+/*ENVP exec*/
+void	ft_env(char **m_envp);
+void	ft_unset(t_command *command, char **m_envp);
+void	ft_export(t_command *command, char **m_envp, int *wstatus);
+void	shlvlup2(char **m_envp, char *temp_num, int i);
+void	shlvlup(char **m_envp);
+
+/*Pathfinder*/
+int	match_path_count(char *command, char **path);
+char	**putlastslash(char **path);
+char	*pathfinder(t_command *command, char **m_envp, int *flag);
+
+/*Exit*/
+void	ft_exit3(t_command *command, char **m_envp, int flag);
+void	ft_exit2(t_command *command, char **m_envp, int *wstatus, int i);
+void	ft_exit(t_command *command, char **m_envp, int *wstatus);
+
+/*Redir*/
+void	redir_output_append(t_command *command, char **m_envp, int *wstatus);
+void	redir_output(t_command *command, char **m_envp, int *wstatus);
+void	redir_input(t_command *command, char **m_envp, int *wstatus);
 
 /*Signal*/
 void		SIGNAL_Handler(int signal);
@@ -101,6 +123,9 @@ int			INIT_Receive_Signal(struct sigaction *sa);
 void		FREE_Command(t_command *command);
 void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
 
+/*Minishell*/
+int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
+void		printerr(int fd, char *name, const char *error, int flag);
 int			UPDATE_Wstatus(char **m_envp, int *wstatus, int flag);
 void		minishell(char **m_envp);
 

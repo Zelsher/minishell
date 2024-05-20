@@ -6,11 +6,21 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/12 21:38:15 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:18:24 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	printerr(int fd, char *name, const char *error, int flag)
+{
+	if (flag == 1)
+		write(fd, "minishell: ", 11);
+	write(fd, name, ft_strlen(name));
+	write(fd, ": ", 2);
+	write(fd, error, ft_strlen(error));
+	write(fd, "\n", 1);
+}
 
 int	UPDATE_Wstatus(char **m_envp, int *wstatus, int flag)
 {
@@ -75,7 +85,6 @@ void	USE_Command(char *new_command, int *wstatus, char **m_envp)
 		if (!verif)
 			ft_free(command, NULL, m_envp, 1);
 	}
-
 }
 
 void	minishell(char **m_envp)

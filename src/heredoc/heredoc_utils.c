@@ -1,4 +1,16 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
+/*   Updated: 2024/05/20 18:19:04 by eboumaza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../inc/minishell.h"
 
 void	Handle_Var_Malloc_Heredoc(char *reader, char **m_envp, t_parse *parse)
 {

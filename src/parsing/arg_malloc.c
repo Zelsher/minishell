@@ -6,11 +6,11 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 00:44:39 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:19:15 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	HANDLE_Var_Malloc(char *new_command, char **m_envp, t_parse *parse)
 {

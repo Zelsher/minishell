@@ -6,11 +6,11 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/12 21:30:26 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:19:20 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	TOKEN_Identifier(char *new_command, t_command *command, int *j, int i)
 {
