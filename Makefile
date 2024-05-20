@@ -4,6 +4,7 @@ INC				= inc/
 SRC_DIR			= src/
 SRC_PARSE		= parsing/
 SRC_HEREDOC		= heredoc/
+SRC_OTHER		= other/
 SRC_EXEC		= exec/
 OBJ_DIR			= obj/
 LIBFT			= Libft/libft.a
@@ -14,10 +15,10 @@ RM				= rm -f
 
 SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)minishell.c \
-					$(SRC_DIR)ft_free.c \
-					$(SRC_DIR)signal.c \
-					$(SRC_DIR)envp.c \
-					$(SRC_DIR)history.c \
+					$(SRC_DIR)$(SRC_OTHER)ft_free.c \
+					$(SRC_DIR)$(SRC_OTHER)signal.c \
+					$(SRC_DIR)$(SRC_OTHER)envp.c \
+					$(SRC_DIR)$(SRC_OTHER)history.c \
 					$(SRC_DIR)$(SRC_PARSE)parse.c \
 					$(SRC_DIR)$(SRC_PARSE)parsing_utils.c \
 					$(SRC_DIR)$(SRC_PARSE)arg_malloc.c \
