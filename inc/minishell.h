@@ -58,8 +58,7 @@ t_command	*CMD_Construct(char *new_command);
 void		PARSE_Construct(t_parse *parse);
 void		skip_ispace(char *new_command, t_parse *parse);
 void    	ft_print_command_tree(t_command *command, char *branch, int i);
-
-char		*pathfinder(t_command *command, char **m_envp, int *flag);
+void		print_cmd(t_command *command);
 
 /*Parsing*/
 t_command	*PUT_P_Arg(t_command *command);
@@ -88,32 +87,32 @@ void		PRINT_History();
 void		ft_exec(t_command *command, char **envp, int *wstatus);
 
 /*Builtins*/
-void	ft_echo(t_command *command);
-void	ft_cd2(t_command *command, char **m_envp, int *wstatus);
-void	ft_cd(t_command *command, char **m_envp, int *wstatus);
-int		built_in(t_command *command, char **m_envp, int *wstatus);
+void		ft_echo(t_command *command);
+void		ft_cd2(t_command *command, char **m_envp, int *wstatus);
+void		ft_cd(t_command *command, char **m_envp, int *wstatus);
+int			built_in(t_command *command, char **m_envp, int *wstatus);
 
 /*ENVP exec*/
-void	ft_env(char **m_envp);
-void	ft_unset(t_command *command, char **m_envp);
-void	ft_export(t_command *command, char **m_envp, int *wstatus);
-void	shlvlup2(char **m_envp, char *temp_num, int i);
-void	shlvlup(char **m_envp);
+void		ft_env(char **m_envp);
+void		ft_unset(t_command *command, char **m_envp);
+void		ft_export(t_command *command, char **m_envp, int *wstatus);
+void		shlvlup2(char **m_envp, char *temp_num, int i);
+void		shlvlup(char **m_envp);
 
 /*Pathfinder*/
-int	match_path_count(char *command, char **path);
-char	**putlastslash(char **path);
-char	*pathfinder(t_command *command, char **m_envp, int *flag);
+int			match_path_count(char *command, char **path);
+char		**putlastslash(char **path);
+char		*pathfinder(t_command *command, char **m_envp, int *flag);
 
 /*Exit*/
-void	ft_exit3(t_command *command, char **m_envp, int flag);
-void	ft_exit2(t_command *command, char **m_envp, int *wstatus, int i);
-void	ft_exit(t_command *command, char **m_envp, int *wstatus);
+void		ft_exit3(t_command *command, char **m_envp, int flag);
+void		ft_exit2(t_command *command, char **m_envp, int *wstatus, int i);
+void		ft_exit(t_command *command, char **m_envp, int *wstatus);
 
 /*Redir*/
-void	redir_output_append(t_command *command, char **m_envp, int *wstatus);
-void	redir_output(t_command *command, char **m_envp, int *wstatus);
-void	redir_input(t_command *command, char **m_envp, int *wstatus);
+void		redir_output_append(t_command *command, char **m_envp, int *wstatus);
+void		redir_output(t_command *command, char **m_envp, int *wstatus);
+void		redir_input(t_command *command, char **m_envp, int *wstatus);
 
 /*Signal*/
 void		SIGNAL_Handler(int signal);

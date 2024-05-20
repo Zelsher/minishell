@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:18:24 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:38:02 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	USE_Command(char *new_command, int *wstatus, char **m_envp)
 	verif = 0;
 	(void)verif;
 	command = CMD_Parse(new_command, m_envp, wstatus);
+	print_cmd(command);
 	free(new_command);
 	if (command && g_exec_pid != -1)
 	{

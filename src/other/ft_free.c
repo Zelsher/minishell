@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 01:02:09 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:42:01 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,4 +186,16 @@ void	ft_print_command_tree(t_command *command, char *branch, int i)
 		ft_print_command_tree(command->left, "left", i + 1);
 	if (command->right)
 		ft_print_command_tree(command->right, "right", i + 1);
+}
+
+void	print_cmd(t_command *command)
+{
+	static int	show;
+
+	if (!ft_strcmp(command->arg[0], "unshow"))
+		show = 0;
+	if (show)
+		ft_print_command_tree(command, "tree", 1);
+	if (!ft_strcmp(command->arg[0], "show"))
+		show = 1;
 }
