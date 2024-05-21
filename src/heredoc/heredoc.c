@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 01:54:04 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/21 02:09:01 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,24 @@ void	HEREDOC(t_command *command, char **m_envp, t_parse *parse, char *new_comman
 	char		*delimiter;
 	int 		fd;
 	
-	delimiter = find_delimiter(new_command, parse);
-	fd = open(".temp_file", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    if (fd == -1)
+	g_exec_pid = fork();
+	if (g_exec_pid == -1)
+		command->invalid = 1;
+	if (g_exec_pid == 0)
 	{
-		command->invalid = 1;
-		return ;
+		g_exec_pid = -2;
+		delimiter = find_delimiter(new_command, parse);
+		fd = open(".temp_file", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    	if (fd == -1)
+		{
+			command->invalid = 1;
+			return ;
+		}
+		HEREDOCKER(delimiter, m_envp, fd);
+		close(fd);
+		exit(0);
 	}
-	close(fd);
-	HEREDOCKER(delimiter, m_envp, fd);
-	command->arg[0] = strdup(".temp_file");
-	if (!command->arg[0])
-		command->invalid = 1;
+	waitpid(g_exec_pid, NULL, 0);
+	g_exec_pid = 0;
 	parse->j += 2;
 }
