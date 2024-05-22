@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 01:16:02 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/22 02:50:54 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ t_command	*RECURSIVE_Parse(char *new_command, char **m_envp, int i, char token)
 	}
 	if (!command->token)
 		command = CMD_Filler(new_command, command, m_envp, token);
-	(void)token;
 	return (command);
 }
 

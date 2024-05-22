@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 01:41:01 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/22 23:05:47 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ void	FREE_Command(t_command *command)
 		command->arg[i] = NULL;
 		i++;
 	}
+	if (command->heredoc)
+	{
+		unlink(command->heredoc);
+		free(command->heredoc);
+	}
 	free(command);
 	return ;
 }
@@ -53,7 +58,7 @@ void	ft_free(t_command *command, char *new_command, char **m_envp, int m_exit)
 	ft_free_envp(m_envp);
 	if (new_command)
 	{
-		free(new_command);
+		free(new_command); 
 		new_command = NULL;
 	}
 	if (m_exit)
@@ -69,8 +74,6 @@ int	CMD_Verifier(t_command *command, int *wstatus)
 		(*wstatus) = command->invalid;
 	if (command->token == 'u')
 		return (ft_printf_error("minishell: syntax error near unexpected token `%d'\n", command->invalid_token), 0);
-	else if (command->token == 'h')
-		command->token = '<';
 	else if ( (!command->token && !command->cmd))
 		return (0);
 	if (command->left)
@@ -82,6 +85,12 @@ int	CMD_Verifier(t_command *command, int *wstatus)
 	if (verif == 0)
 		return (verif);
 	return (verif);
+}
+
+void return_parse_error(t_command *command)
+{
+	command->invalid = 1;
+	return ;
 }
 
 void	ft_print_command_tree(t_command *command, char *branch, int i)

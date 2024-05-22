@@ -39,6 +39,12 @@ typedef struct s_command
 	struct s_command	*right;
 }					t_command;
 
+typedef struct s_mshell
+{
+	struct s_command	*command;
+}					t_mshell;
+
+
 typedef struct s_parse
 {
 	size_t	i;
@@ -72,7 +78,8 @@ int			EXPORT_Envp(char **m_envp, char *cmd);
 /*Heredoc*/
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
-void		HEREDOC(t_command *command, char **m_envp, t_parse *parse, char *new_command);
+int			HEREDOC(t_command *command, char **m_envp, t_parse *parse, char *new_command);
+void		create_file_name(int nb, char *file_name, int temp, int count);
 
 /*History*/
 int			IS_Last_Cmd(const char *new_command);
@@ -116,7 +123,7 @@ int			INIT_Receive_Signal(struct sigaction *sa);
 /*Free*/
 void		FREE_Command(t_command *command);
 void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
-
+void 		return_parse_error(t_command *command);
 /*Minishell*/
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);

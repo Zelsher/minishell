@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 02:08:46 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/22 03:31:34 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,10 @@ t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char
 	if (token == 'h')
 	{
 		HEREDOC(command, m_envp, &parse, new_command);
-		command->arg[0] = strdup(".temp_file");
+		command->arg[0] = strdup(command->heredoc);
 		if (!command->arg[0])
-			command->invalid = 1;
+			return (return_parse_error(command), command);
+		parse.j += 1;
 	}
 	while (new_command[parse.i] && parse.j < 201)
 	{

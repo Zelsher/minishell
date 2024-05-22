@@ -6,11 +6,40 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 01:49:50 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/22 03:35:27 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	create_file_name(int nb, char *file_name, int temp, int count)
+{
+	int	i;
+
+	file_name[(ft_nbrlen(nb) + 10)] = '\0';
+	ft_strcpy(file_name, ".temp_file");
+	i = 0;
+	while (nb != 0)
+	{
+		temp = nb;
+		count = 1;
+		while (temp >= 10)
+		{
+			temp /= 10;
+			count *= 10;
+		}
+		file_name[10 + i] = temp + '0';
+		nb -= temp * count;
+		while (count > nb * 10 && count != 1)
+		{
+			i++;
+			count /= 10;
+			file_name[10 + i] = '0';
+		}
+		i++;
+	}
+	printf("heredoc_file : %s\n", file_name);
+}
 
 void	Handle_Var_Malloc_Heredoc(char *reader, char **m_envp, t_parse *parse)
 {
@@ -39,7 +68,6 @@ char	*MALLOC_Heredoc_Line(char *reader, char **m_envp)
 		}
 	}
 	here_doc_line = malloc(sizeof(char) * parse.j + 2);
-	//printf("malloc de %ld\n", parse.j + 1);
 	return (here_doc_line);
 }
 
