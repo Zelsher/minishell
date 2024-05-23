@@ -8,3 +8,4 @@ echo '$?' "$?" "la $PATH ' $"
 free de lexec
 pofiner le heredoc
 signaux, readline, dans le heredoc aussi
+revoir REDIRECT_Init

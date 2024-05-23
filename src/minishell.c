@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 01:30:01 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 01:34:58 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,15 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 	return (1);
 }
 
-void	USE_Command(char *new_command, int *wstatus, char **m_envp)
+void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_envp)
 {
 	t_command	*command;
 	int			verif;
 
 	verif = 0;
-	(void)verif;
-	command = CMD_Parse(new_command, m_envp, wstatus);
-	print_cmd(command);
+	command = CMD_Parse(m_shell, new_command, m_envp, wstatus);
 	free(new_command);
+	print_cmd(command);
 	if (command && g_exec_pid != -1)
 	{
 		if(ft_builtins(command, wstatus, m_envp) != 0)
@@ -90,9 +89,13 @@ void	USE_Command(char *new_command, int *wstatus, char **m_envp)
 
 void	minishell(char **m_envp)
 {
+	t_mshell			m_shell;
 	char				*new_command;
 	int					wstatus;
 
+	m_shell.m_envp = m_envp;
+	m_shell.command = NULL;
+	m_shell.command = NULL;
 	wstatus = 0;
 	while (1)
 	{
@@ -102,7 +105,8 @@ void	minishell(char **m_envp)
 			ft_free(NULL, NULL, m_envp, 1);
 		if (new_command[0] != 0 && !IS_Last_Cmd(new_command))
 			add_history(new_command);
+		m_shell.new_command = new_command;
 		if (new_command)
-			USE_Command(new_command, &wstatus, m_envp);
+			USE_Command(&m_shell, new_command, &wstatus, m_envp);
 	}
 }

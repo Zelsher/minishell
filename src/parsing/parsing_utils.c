@@ -6,19 +6,21 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:19:22 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 01:06:43 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_command	*CMD_Construct(char *new_command)
+t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd)
 {
 	t_command	*command;
 
 	command = malloc(sizeof(t_command));
 	if (!command)
 		return (NULL);
+	if (first_cmd == 't')
+		m_shell->command = command;
 	command->invalid = 0;
 	command->type = 0;
 	command->token = 0;
@@ -26,10 +28,8 @@ t_command	*CMD_Construct(char *new_command)
 	command->heredoc = NULL;
 	command->arg[0] = NULL;
 	command->arg[1] = NULL;
-	command->quote[0] = 0;
 	command->p_opt = NULL;
 	command->p_file = NULL;
-	command->p_new_command = new_command;
 	command->left = NULL;
 	command->right = NULL;
 	return (command);

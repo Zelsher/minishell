@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/22 02:50:54 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 02:20:44 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,64 +64,56 @@ int	REDIRECT_Init(t_command *command)
 {
 	t_command	*temp;
 	int			i;
-	
-	i = 1;
+
+	i = 0;
+	temp = command->right;
 	while (command->left->arg[i])
 		i++;
-	temp = command->right;
-	while (temp && temp->token == command->token)
-	{
-		command->left->arg[i] = ft_strdup(temp->left->cmd);
-		if (!command->left->arg[i])
-			return (0);
-		temp = temp->right;
-		i++;
-		if (temp && temp->cmd)
-		{
-			command->left->arg[i] = ft_strdup(temp->cmd);
-			if (!command->left->arg[i])
-				return (0);
-			i++;
-		}
-	}
-	command->left->arg[i] = NULL;
+	if (i > 199)
+		return (0);
+	if (temp->token)
+		temp = temp->left;
+	command->left->arg[i] = strdup(temp->arg[0]);
+	if (!command->left->arg[i])
+		return (0);
+	command->left->arg[i + 1] = NULL;
 	return(1);
 }
 
 //Parcours la commande, si un token est trouver, la fonction est rappeler pour la string avant le token, et apres.
-t_command	*RECURSIVE_Parse(char *new_command, char **m_envp, int i, char token)
+t_command	*RECURSIVE_Parse(t_mshell *m_shell, char *new_command, int i, char token)
 {
 	t_command	*command;
 
-	command = CMD_Construct(new_command);
+	command = CMD_Construct(m_shell, token);
 	if (!command)
 		return (NULL);
 	if (TOKENER(new_command, command, &i, "|&"))
 	{
-		command->left = RECURSIVE_Parse(new_command, m_envp, 0, command->token);
-		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0, command->token);
+		command->left = RECURSIVE_Parse(m_shell, new_command, 0, command->token);
+		command->right = RECURSIVE_Parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
 			return (FREE_Command(command), NULL);
 	}
 	if (TOKENER(new_command, command, &i, "<>"))
 	{
-		command->left = RECURSIVE_Parse(new_command, m_envp, 0, 0);
-		command->right = RECURSIVE_Parse(new_command + i, m_envp, 0, command->token);
+		command->left = RECURSIVE_Parse(m_shell, new_command, 0, '0');
+		command->right = RECURSIVE_Parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
 			return (FREE_Command(command), NULL);
 		if (!REDIRECT_Init(command))
 			return (FREE_Command(command), NULL);
 	}
 	if (!command->token)
-		command = CMD_Filler(new_command, command, m_envp, token);
+		command = CMD_Filler(m_shell, new_command, command, token);
 	return (command);
 }
 
-t_command	*CMD_Parse(char *new_command, char **m_envp, int *wstatus)
+t_command	*CMD_Parse(t_mshell *m_shell, char *new_command, char **m_envp, int *wstatus)
 {
 	t_command	*command;
 
-	command = RECURSIVE_Parse(new_command, m_envp, 0, 0);
+	command = RECURSIVE_Parse(m_shell, new_command, 0, 't');
 	if (!command)
 		ft_free(NULL, new_command, m_envp, 1);
 	if (!CMD_Verifier(command, wstatus))

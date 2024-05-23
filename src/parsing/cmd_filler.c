@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/22 03:31:34 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 02:30:40 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,16 @@ void	UPDATE_Arg(t_command *command, t_parse *parse)
 	}
 }
 
-t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char token)
+t_command	*CMD_Filler(t_mshell *m_shell, char *new_command, t_command *command, char token)
 {
 	t_parse	parse;
 
 	PARSE_Construct(&parse);
 	if (token == 'h')
 	{
-		HEREDOC(command, m_envp, &parse, new_command);
+		HEREDOC(m_shell, command, &parse, new_command);
 		command->arg[0] = strdup(command->heredoc);
+		command->cmd = command->arg[0];
 		if (!command->arg[0])
 			return (return_parse_error(command), command);
 		parse.j += 1;
@@ -110,10 +111,10 @@ t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char
 		skip_ispace(new_command, &parse);
 		if (!new_command[parse.i])
 			break;
-		command->arg[parse.j] = ARG_Malloc(command, new_command + parse.i, m_envp);
+		command->arg[parse.j] = ARG_Malloc(command, new_command + parse.i, m_shell->m_envp);
 		if (command->invalid || parse.i == 201)
 			return (FREE_Command(command), NULL);
-		parse.i += ARGER(new_command + parse.i, command->arg[parse.j], m_envp);
+		parse.i += ARGER(new_command + parse.i, command->arg[parse.j], m_shell->m_envp);
 		UPDATE_Arg(command, &parse);
 	}
 	return (PUT_P_Arg(command));

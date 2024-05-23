@@ -9,6 +9,10 @@
 #  define CMD_ARG_LEN 201
 # endif
 
+#ifndef M_ENVP
+#  define M_ENVP "m_shell->m_envp"
+# endif
+
 #include "../Libft/libft.h"
 #include <dirent.h>
 #include <errno.h>
@@ -31,10 +35,8 @@ typedef struct s_command
 	char				*cmd;
 	char				*heredoc;
 	char				*arg[201];
-	int					quote[201];
 	char				*p_file;
 	char				*p_opt;
-	char				*p_new_command;
 	struct s_command	*left;
 	struct s_command	*right;
 }					t_command;
@@ -42,6 +44,8 @@ typedef struct s_command
 typedef struct s_mshell
 {
 	struct s_command	*command;
+	char				**m_envp;
+	char				*new_command;
 }					t_mshell;
 
 
@@ -55,7 +59,7 @@ typedef struct s_parse
 extern int g_exec_pid;
 
 /*Parsing_utils*/
-t_command	*CMD_Construct(char *new_command);
+t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd);
 void		PARSE_Construct(t_parse *parse);
 void		skip_ispace(char *new_command, t_parse *parse);
 void    	ft_print_command_tree(t_command *command, char *branch, int i);
@@ -65,8 +69,8 @@ void		print_cmd(t_command *command);
 t_command	*PUT_P_Arg(t_command *command);
 int 		CMD_Verifier(t_command *command, int *wstatus);
 char		*ARG_Malloc(t_command *command, char *new_command, char **m_envp);
-t_command	*CMD_Filler(char *new_command, t_command *command, char **m_envp, char token);
-t_command   *CMD_Parse(char *new_command, char **m_envp, int *verif);
+t_command	*CMD_Filler(t_mshell *m_shell, char *new_command, t_command *command, char token);
+t_command	*CMD_Parse(t_mshell *m_shell, char *new_command, char **m_envp, int *wstatus);
 
 /*ENVP*/
 void		ENVP_Print(char	**m_envp);
@@ -78,7 +82,7 @@ int			EXPORT_Envp(char **m_envp, char *cmd);
 /*Heredoc*/
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
-int			HEREDOC(t_command *command, char **m_envp, t_parse *parse, char *new_command);
+int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command);
 void		create_file_name(int nb, char *file_name, int temp, int count);
 
 /*History*/

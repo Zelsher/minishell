@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/22 03:35:27 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 02:32:47 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	create_file_name(int nb, char *file_name, int temp, int count)
 		}
 		i++;
 	}
-	printf("heredoc_file : %s\n", file_name);
+	//printf("heredoc_file : %s\n", file_name);
 }
 
 void	Handle_Var_Malloc_Heredoc(char *reader, char **m_envp, t_parse *parse)
