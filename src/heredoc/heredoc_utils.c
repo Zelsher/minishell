@@ -6,39 +6,28 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 02:32:47 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:49:18 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	create_file_name(int nb, char *file_name, int temp, int count)
+char	*find_delimiter(char *new_command, t_parse *parse)
 {
-	int	i;
+	char	*p_delimiter;
 
-	file_name[(ft_nbrlen(nb) + 10)] = '\0';
-	ft_strcpy(file_name, ".temp_file");
-	i = 0;
-	while (nb != 0)
+	parse->i = 0;
+	while (is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
+		parse->i += 1;
+	p_delimiter = new_command + parse->i;
+	while (!is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
+		parse->i += 1;
+	if (new_command[parse->i])
 	{
-		temp = nb;
-		count = 1;
-		while (temp >= 10)
-		{
-			temp /= 10;
-			count *= 10;
-		}
-		file_name[10 + i] = temp + '0';
-		nb -= temp * count;
-		while (count > nb * 10 && count != 1)
-		{
-			i++;
-			count /= 10;
-			file_name[10 + i] = '0';
-		}
-		i++;
+		parse->i += 1;
+		new_command[parse->i - 1] = '\0';
 	}
-	//printf("heredoc_file : %s\n", file_name);
+	return (p_delimiter);
 }
 
 void	Handle_Var_Malloc_Heredoc(char *reader, char **m_envp, t_parse *parse)

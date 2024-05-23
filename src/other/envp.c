@@ -6,25 +6,11 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/04/19 00:58:00 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:49:41 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	envp_print(char **m_envp)
-{
-	int	i;
-
-	i = 1;
-	printf("\n_______________________________________________________________________\n");
-	while (m_envp[i])
-	{
-		printf("%s\n", m_envp[i]);
-		i++;
-	}
-	printf("_______________________________________________________________________\n");
-}
 
 void	ENVP_Cpy(char **m_envp, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:18:28 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:53:19 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int	built_in(t_command *command, char **m_envp, int *wstatus)
 		getcwd(buffer, 2048);
 		printf("%s\n", buffer);
 		(*wstatus) = 0;
-		ft_free(command, NULL, m_envp, 1);//a voir pr la valeur de retour (jai mis un jsp comment tu fais avec 0)
+		ft_free(command, NULL, m_envp, 0);//a voir pr la valeur de retour (jai mis un jsp comment tu fais avec 0)
+		exit(0);
 	}
 	return (0);
 }

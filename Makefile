@@ -24,6 +24,7 @@ SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)$(SRC_PARSE)arg_malloc.c \
 					$(SRC_DIR)$(SRC_PARSE)cmd_filler.c \
 					$(SRC_DIR)$(SRC_HEREDOC)heredoc.c \
+					$(SRC_DIR)$(SRC_HEREDOC)heredoc_file.c \
 					$(SRC_DIR)$(SRC_HEREDOC)heredoc_utils.c \
 					$(SRC_DIR)$(SRC_EXEC)builtin.c \
 					$(SRC_DIR)$(SRC_EXEC)env_exec.c \

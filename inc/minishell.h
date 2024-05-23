@@ -80,10 +80,11 @@ void		UNSET_Envp(char **m_envp, char *cmd);
 int			EXPORT_Envp(char **m_envp, char *cmd);
 
 /*Heredoc*/
+char		*generate_file(int *count);
+char		*find_delimiter(char *new_command, t_parse *parse);
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
-int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command);
-void		create_file_name(int nb, char *file_name, int temp, int count);
+int			HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command);
 
 /*History*/
 int			IS_Last_Cmd(const char *new_command);
@@ -93,6 +94,7 @@ void		PRINT_History();
 void		ft_exec(t_command *command, char **envp, int *wstatus);
 
 /*Builtins*/
+void		ft_env(char **m_envp);
 void		ft_echo(t_command *command);
 void		ft_cd2(t_command *command, char **m_envp, int *wstatus);
 void		ft_cd(t_command *command, char **m_envp, int *wstatus);
@@ -123,7 +125,6 @@ void		redir_input(t_command *command, char **m_envp, int *wstatus);
 /*Signal*/
 void		SIGNAL_Handler(int signal);
 int			INIT_Receive_Signal(struct sigaction *sa);
-
 /*Free*/
 void		FREE_Command(t_command *command);
 void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
