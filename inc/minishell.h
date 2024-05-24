@@ -9,8 +9,8 @@
 #  define CMD_ARG_LEN 201
 # endif
 
-#ifndef M_ENVP
-#  define M_ENVP "m_shell->m_envp"
+#ifndef HEREDOC_EOF
+#  define HEREDOC_EOF "minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n"
 # endif
 
 #include "../Libft/libft.h"
@@ -46,6 +46,7 @@ typedef struct s_mshell
 	struct s_command	*command;
 	char				**m_envp;
 	char				*new_command;
+	size_t				line;
 }					t_mshell;
 
 
@@ -80,7 +81,7 @@ void		UNSET_Envp(char **m_envp, char *cmd);
 int			EXPORT_Envp(char **m_envp, char *cmd);
 
 /*Heredoc*/
-char		*generate_file(int *count);
+char		*generate_file(size_t *count);
 char		*find_delimiter(char *new_command, t_parse *parse);
 int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
 char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
@@ -133,6 +134,6 @@ void 		return_parse_error(t_command *command);
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);
 int			UPDATE_Wstatus(char **m_envp, int *wstatus, int flag);
-void		minishell(char **m_envp);
+void		minishell(t_mshell *m_shell);
 
 #endif

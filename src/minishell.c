@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 01:34:58 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 01:14:30 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,23 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 	}
 }
 
-void	minishell(char **m_envp)
+void	minishell(t_mshell *m_shell)
 {
-	t_mshell			m_shell;
 	char				*new_command;
 	int					wstatus;
 
-	m_shell.m_envp = m_envp;
-	m_shell.command = NULL;
-	m_shell.command = NULL;
 	wstatus = 0;
 	while (1)
 	{
 		new_command = readline("$");
+		m_shell->line++;
 		g_exec_pid = 0;
 		if (!new_command)
-			ft_free(NULL, NULL, m_envp, 1);
+			ft_free(NULL, NULL, m_shell->m_envp, 1);
 		if (new_command[0] != 0 && !IS_Last_Cmd(new_command))
 			add_history(new_command);
-		m_shell.new_command = new_command;
+		m_shell->new_command = new_command;
 		if (new_command)
-			USE_Command(&m_shell, new_command, &wstatus, m_envp);
+			USE_Command(m_shell, new_command, &wstatus, m_shell->m_envp);
 	}
 }

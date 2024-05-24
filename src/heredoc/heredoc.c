@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 23:50:05 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:56:32 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,30 @@ char	*HEREDOC_Liner(char *reader, char **m_envp, int fd)
 	return (NULL);
 }
 
-int	HEREDOCKER(char *file_name, char *delimiter, char **m_envp)
+int	HEREDOCKER(t_mshell *m_shell, char *file_name, char *delimiter)
 {
 	char 	*reader;
-	int		i;
-	int 	fd;
-
-	i = 0;
-	g_exec_pid = -2;
-	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    if (fd == -1)
+	int		line;
+	int		fd;
+	
+	line = 0;
+	fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
 		return (-1);
 	while (1)
 	{
-		i++;
 		reader = readline(">");
 		if (!reader || !ft_strcmp(delimiter, reader))
 		{
 			if (!reader)
-				ft_printf_error("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i + 1, delimiter);
+				ft_printf_error(HEREDOC_EOF, m_shell->line, delimiter);
 			else 
 				free(reader);
+			m_shell += line;
 			break;
 		}
-		HEREDOC_Liner(reader, m_envp, fd);
+		HEREDOC_Liner(reader, m_shell->m_envp, fd);
+		line++;
 	}
 	close(fd);
 	return (1);
@@ -61,25 +61,29 @@ int	HEREDOCKER(char *file_name, char *delimiter, char **m_envp)
 
 int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command)
 {
-	static int	count;
-	char		*delimiter;
-	int			verif;
+	static size_t	count;
+	char			*delimiter;
+	int				verif;
+	char			*file_name;
 	
 	delimiter = find_delimiter(new_command, parse);
-	command->heredoc = generate_file(&count);
-	if (!command->heredoc)
+	file_name = generate_file(&count);
+	if (!file_name)
 		return (return_parse_error(command), 0);
 	g_exec_pid = fork();
 	if (g_exec_pid == -1)
 		return (return_parse_error(command), 0);
 	if (g_exec_pid == 0)
 	{
+		g_exec_pid = -2;
 		FREE_Command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
-			HEREDOCKER(command->heredoc, delimiter, m_shell->m_envp));
+			HEREDOCKER(m_shell, file_name, delimiter));
+		exit(0);
 	}
 	waitpid(g_exec_pid, &verif, 0);
 	if (verif == -1)
 		return (free(command->heredoc), return_parse_error(command), 0);
+	command->heredoc = file_name;
 	return (1);
 }

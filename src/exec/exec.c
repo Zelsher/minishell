@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 01:46:36 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:31:14 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 
 void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 {
-	g_exec_pid = -2;
 	if (command->token == '|')
 		pipecmd(command, m_envp, wstatus);
 	else if (command->token == '<')

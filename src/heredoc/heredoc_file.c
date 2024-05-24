@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:09:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 23:50:48 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 01:27:08 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	create_file_name(int nb, char *file_name, int temp, int count)
+void	create_file_name(size_t nb, char *file_name, size_t temp, size_t count)
 {
 	int	i;
 
@@ -40,21 +40,23 @@ void	create_file_name(int nb, char *file_name, int temp, int count)
 	}
 }
 
-char	*generate_file(int *count)
+char	*generate_file(size_t *count)
 {
 	char *file_name;
 	
 	file_name = NULL;
 	while (!file_name)
 	{
-		if (*count == 214739)
-			return (NULL);
 		file_name = malloc(sizeof(char) * ft_nbrlen(*count) + 11);
 		if (!file_name)
 			return (NULL);
 		create_file_name(*count, file_name, 0, 0);
-		//if (access(file_name, F_OK))
-		//	free(file_name);
+		if (!access(file_name, F_OK))
+		{
+			free(file_name);
+			file_name = NULL;
+			printf("acces\n");
+		}
 		*count += 1;
 	}
 	return (file_name);

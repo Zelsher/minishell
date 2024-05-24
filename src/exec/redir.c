@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:59:54 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/22 01:04:24 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:56:58 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	redir_input(t_command *command, char **m_envp, int *wstatus)
 
 	fd = open(command->right->cmd, O_RDONLY);
 	if (fd < 0)
-		exit(1);
+		ft_free(command, NULL, m_envp, 1);
 	dup2(fd, STDIN_FILENO);
 	ft_exec(command->left, m_envp, wstatus);
 }
