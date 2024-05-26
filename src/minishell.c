@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 01:36:56 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 11:05:57 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,18 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 			if (g_exec_pid == 0)
 				ft_exec(command, m_envp, wstatus);
 			waitpid(g_exec_pid, wstatus, 0);
+			if (g_exec_pid == -5)
+			{
+				(*wstatus) = 130;
+				UPDATE_Wstatus(m_envp, wstatus, 0);
+				return;
+			}
 			g_exec_pid = 0;
 			ft_free(command, NULL, NULL, 0);
 			verif = UPDATE_Wstatus(m_envp, wstatus, 1);
 		}
 		else
-			verif = UPDATE_Wstatus(m_envp, wstatus, 0);
+			UPDATE_Wstatus(m_envp, wstatus, 0);
 		if (!verif)
 			ft_free(command, NULL, m_envp, 1);
 	}
