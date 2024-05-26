@@ -6,16 +6,16 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:54:03 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 02:10:21 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:03:24 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	receive_pipe(t_command *command, int pipefd[2], char **m_envp, int *wstatus)
+void	receive_pipe(t_command *command, int pipefd[2],
+	char **m_envp, int *wstatus)
 {
-
-	t_command *p_command_pipe;
+	t_command	*p_command_pipe;
 
 	p_command_pipe = command->right;
 	ft_free(command->left, NULL, NULL, 0);
@@ -26,9 +26,10 @@ void	receive_pipe(t_command *command, int pipefd[2], char **m_envp, int *wstatus
 	close(pipefd[0]);
 }
 
-void	launch_pipe(t_command *command, int pipefd[2], char **m_envp, int *wstatus)
+void	launch_pipe(t_command *command, int pipefd[2],
+	char **m_envp, int *wstatus)
 {
-	t_command *p_command_pipe;
+	t_command	*p_command_pipe;
 
 	p_command_pipe = command->left;
 	ft_free(command->right, NULL, NULL, 0);

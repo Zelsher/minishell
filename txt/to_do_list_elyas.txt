@@ -5,9 +5,6 @@ command1 -r --a file1 | command 2 -l file2 ; command3 -o file3
 
 echo '$?' "$?" "la $PATH ' $" 
 
-
+verifier si il est possible de securiser le heredoc, en verifier si le fd est tjr ouvert avant dy ecrire
 tester avec plusieurs < < > < pour voir comment le redir fonctionnent
-free de lexec
-pofiner le heredoc
-signaux, readline, dans le heredoc aussi
 revoir REDIRECT_Init

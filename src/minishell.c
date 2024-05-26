@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:43:48 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:55:55 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	update_wstatus(char **m_envp, int *wstatus, int flag)
 {
-	int	i;
+	int		i;
 	char	*char_wstatus;
 
 	i = 0;
@@ -36,7 +36,7 @@ int	update_wstatus(char **m_envp, int *wstatus, int flag)
 
 int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 {
-	if(ft_strcmp(command->cmd, "cd") == 0)
+	if (ft_strcmp(command->cmd, "cd") == 0)
 		return (ft_cd(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
 		return (ft_exit(command, m_envp, wstatus), 0);

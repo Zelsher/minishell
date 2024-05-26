@@ -1,41 +1,50 @@
-#ifndef MINISHELL_H
-#define MINISHELL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
+/*   Updated: 2024/05/26 22:17:14 by eboumaza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef M_ENVP_LEN
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# ifndef M_ENVP_LEN
 #  define M_ENVP_LEN 100
 # endif
 
-#ifndef CMD_ARG_LEN
+# ifndef CMD_ARG_LEN
 #  define CMD_ARG_LEN 201
 # endif
 
-#ifndef HEREDOC_EOF
-#  define HEREDOC_EOF "minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n"
-# endif
-
-#include "../Libft/libft.h"
-#include <dirent.h>
-#include <termios.h>
-#include <errno.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <signal.h>
+# include "../Libft/libft.h"
+# include <dirent.h>
+# include <termios.h>
+# include <errno.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <unistd.h>
+# include <signal.h>
+# include <fcntl.h>
 
 typedef struct s_command
 {
 	int					invalid;
 	int					type;
 	char				invalid_token;
-	char				token;//correspond au token, et [&& = e] [|| = p] [>> = r] les autres donneront u
+	char				token;
 	char				*cmd;
 	char				*heredoc;
-	char				*arg[201];
+	char				*arg[CMD_ARG_LEN];
 	char				*p_file;
 	char				*p_opt;
 	struct s_command	*left;
@@ -50,51 +59,56 @@ typedef struct s_mshell
 	size_t				line;
 }					t_mshell;
 
-
 typedef struct s_parse
 {
 	size_t	i;
 	size_t	j;
-	int	quote;
+	int		quote;
 }					t_parse;
 
-extern int g_exec_pid;
+extern int	g_exec_pid;
 
 /*Parsing_utils*/
-t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd);
-void		PARSE_Construct(t_parse *parse);
+t_command	*cmd_construct(t_mshell *m_shell, char first_cmd);
+void		parse_construct(t_parse *parse);
 void		skip_ispace(char *new_command, t_parse *parse);
-void    	ft_print_command_tree(t_command *command, char *branch, int i);
+void		ft_print_command_tree(t_command *command, char *branch, int i);
 void		print_cmd(t_command *command, int a);
 
 /*Parsing*/
-t_command	*PUT_P_Arg(t_command *command);
-int 		CMD_Verifier(t_command *command, int *wstatus);
-char		*ARG_Malloc(t_command *command, char *new_command, char **m_envp);
-t_command	*CMD_Filler(t_mshell *m_shell, char *new_command, t_command *command, char token);
-t_command	*CMD_Parse(t_mshell *m_shell, char *new_command, char **m_envp, int *wstatus);
+t_command	*put_p_arg(t_command *command);
+int			cmd_verifier(t_command *command, int *wstatus);
+char		*arg_malloc(t_command *command, char *new_command, char **m_envp);
+t_command	*cmd_filler(t_mshell *m_shell, char *new_command,
+				t_command *command, char token);
+t_command	*cmd_parse(t_mshell *m_shell, char *new_command,
+				char **m_envp, int *wstatus);
 
 /*ENVP*/
-void		ENVP_Print(char	**m_envp);
-void		ENVP_Cpy(char **m_envp, char **envp);
-char		*FIND_Var_Envp(char **m_envp, char *var, int verif);
-void		UNSET_Envp(char **m_envp, char *cmd);
-int			EXPORT_Envp(char **m_envp, char *cmd);
+void		envp_print(char	**m_envp);
+void		envp_cpy(char **m_envp, char **envp);
+char		*find_var_envp(char **m_envp, char *var, int verif);
+void		unset_envp(char **m_envp, char *cmd);
+int			export_envp(char **m_envp, char *cmd);
 
 /*Heredoc*/
+void		return_parse_error(t_command *command);
 char		*generate_file(size_t *count);
 char		*find_delimiter(char *new_command, t_parse *parse);
-int			CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp);
-char		*MALLOC_Heredoc_Line(char *reader, char **m_envp);
-int			HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command);
+int			create_heredoc_line(char *reader,
+				char *here_doc_line, char **m_envp);
+char		*malloc_heredoc_line(char *reader, char **m_envp);
+int			heredoc(t_mshell *m_shell, t_command *command,
+				t_parse *parse, char *new_command);
 
 /*History*/
-int			IS_Last_Cmd(const char *new_command);
-void		PRINT_History();
+int			is_last_cmd(const char *new_command);
+void		print_history(void);
 
 /*exec*/
 void		ft_exec(t_command *command, char **envp, int *wstatus);
 int			pipecmd(t_command *command, char **m_envp, int *wstatus);
+
 /*Builtins*/
 void		ft_env(char **m_envp);
 void		ft_echo(t_command *command);
@@ -106,8 +120,7 @@ int			built_in(t_command *command, char **m_envp, int *wstatus);
 void		ft_env(char **m_envp);
 void		ft_unset(t_command *command, char **m_envp);
 void		ft_export(t_command *command, char **m_envp, int *wstatus);
-void		shlvlup2(char **m_envp, char *temp_num, int i);
-void		shlvlup(char **m_envp);
+int			shlvlup(char **m_envp);
 
 /*Pathfinder*/
 int			match_path_count(char *command, char **path);
@@ -120,23 +133,27 @@ void		ft_exit2(t_command *command, char **m_envp, int *wstatus, int i);
 void		ft_exit(t_command *command, char **m_envp, int *wstatus);
 
 /*Redir*/
-void		redir_output_append(t_command *command, char **m_envp, int *wstatus);
+void		redir_output_append(t_command *command,
+				char **m_envp, int *wstatus);
 void		redir_output(t_command *command, char **m_envp, int *wstatus);
 void		redir_input(t_command *command, char **m_envp, int *wstatus);
 void		redir_heredoc(t_command *command, char **m_envp, int *wstatus);
+
 /*Signal*/
-void		SIGNAL_Handler(int signal);
-int			INIT_Receive_Signal(struct sigaction *sa);
+void		singal_handler(int signal);
+int			init_receive_signal(struct sigaction *sa);
+
 /*Free*/
-void		FREE_Command(t_command *command);
-void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
-void 		return_parse_error(t_command *command);
+void		free_command(t_command *command);
+void		ft_free(t_command *command, char *new_command,
+				char **m_envp, int m_exit);
+void		return_parse_error(t_command *command);
 void		free_single_command(t_command *command);
 
 /*Minishell*/
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);
-int			UPDATE_Wstatus(char **m_envp, int *wstatus, int flag);
+int			update_wstatus(char **m_envp, int *wstatus, int flag);
 void		minishell(t_mshell *m_shell);
 
 #endif

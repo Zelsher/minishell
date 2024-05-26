@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:44:38 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:11:58 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	token_identifier(char *new_command, t_command *command, int *j, int i)
 		command->token = 'e';
 	else if (new_command[0] == '|' && new_command[1] == '|')
 		command->token = 'p';
-	else if (is_in(new_command[1], "<>|&") || 0)//mettre pr les new_line (syntax error near unexpected token `newline')
+	else if (is_in(new_command[1], "<>|&") || 0) //mettre pr les new_line (syntax error near unexpected token `newline')
 	{
 		command->token = 'u';
 		command->invalid_token = *new_command + 1;
@@ -77,11 +77,11 @@ int	redirect_init(t_command *command)
 	if (!command->left->arg[i])
 		return (0);
 	command->left->arg[i + 1] = NULL;
-	return(1);
+	return (1);
 }
 
-//Parcours la commande, si un token est trouver, la fonction est rappeler pour la string avant le token, et apres.
-t_command	*recursive_parse(t_mshell *m_shell, char *new_command, int i, char token)
+t_command	*recurs_parse(t_mshell *m_shell, char *new_command,
+	int i, char token)
 {
 	t_command	*command;
 
@@ -90,19 +90,17 @@ t_command	*recursive_parse(t_mshell *m_shell, char *new_command, int i, char tok
 		return (NULL);
 	if (tokener(new_command, command, &i, "|&"))
 	{
-		command->left = recursive_parse(m_shell, new_command, 0, command->token);
-		command->right = recursive_parse(m_shell, new_command + i, 0, command->token);
+		command->left = recurs_parse(m_shell, new_command, 0, command->token);
+		command->right = recurs_parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
 			return (free_command(command), NULL);
 	}
 	if (tokener(new_command, command, &i, "<>"))
 	{
-		command->left = recursive_parse(m_shell, new_command, 0, '0');
-		command->right = recursive_parse(m_shell, new_command + i, 0, command->token);
+		command->left = recurs_parse(m_shell, new_command, 0, '0');
+		command->right = recurs_parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
 			return (free_command(command), NULL);
-		//if (!REDIRECT_Init(command))
-		//	return (FREE_Command(command), NULL);
 	}
 	if (!command->token)
 		command = cmd_filler(m_shell, new_command, command, token);
@@ -113,7 +111,7 @@ t_command	*cmd_parse(t_mshell *m_shell, char *new_command, char **m_envp, int *w
 {
 	t_command	*command;
 
-	command = recursive_parse(m_shell, new_command, 0, 't');
+	command = recurs_parse(m_shell, new_command, 0, 't');
 	free(new_command);
 	if (!command)
 		ft_free(command, NULL, m_envp, 1);

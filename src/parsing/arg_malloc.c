@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:44:55 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:10:25 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	handle_var_malloc(char *new_command, char **m_envp, t_parse *parse)
 	if (new_command[parse->i + 1] == '?')
 	{
 		parse->i += 2;
-		return;
+		return ;
 	}
 	while (new_command[parse->i] && !is_quote(new_command[parse->i])
 		&& !is_in(new_command[parse->i], "\t\v\n\r "))
@@ -35,7 +35,9 @@ void	handle_quote_malloc(char *new_command, char **m_envp, t_parse *parse)
 	parse->i++;
 	while (new_command[parse->i] && new_command[parse->i] != parse->quote)
 	{
-		if (parse->quote == 34 && new_command[parse->i] == '$' && (ft_isalnum(new_command[parse->i + 1]) || new_command[parse->i + 1] == '?') 
+		if (parse->quote == 34 && new_command[parse->i] == '$'
+			&& (ft_isalnum(new_command[parse->i + 1])
+				|| new_command[parse->i + 1] == '?')
 			&& new_command[parse->i + 1] != parse->quote)
 			handle_var_malloc(new_command, m_envp, parse);
 		else
@@ -58,7 +60,9 @@ char	*arg_malloc(t_command *command, char *new_command, char **m_envp)
 	{
 		if (is_quote(new_command[parse.i]))
 			handle_quote_malloc(new_command, m_envp, &parse);
-		else if (new_command[parse.i] == '$' && (ft_isalnum(new_command[parse.i + 1]) || new_command[parse.i + 1] == '?'))
+		else if (new_command[parse.i] == '$'
+			&& (ft_isalnum(new_command[parse.i + 1])
+				|| new_command[parse.i + 1] == '?'))
 			handle_var_malloc(new_command, m_envp, &parse);
 		else
 		{
@@ -68,7 +72,7 @@ char	*arg_malloc(t_command *command, char *new_command, char **m_envp)
 	}
 	if (!parse.j)
 		return (NULL);
-	arg = malloc(sizeof(char) * (parse.j + 1));;
+	arg = malloc(sizeof(char) * (parse.j + 1));
 	if (!arg)
 		command->invalid = 999;
 	//printf("malloc de %ld\n", parse.j + 1);

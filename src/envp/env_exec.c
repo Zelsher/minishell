@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:58:11 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:46:27 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:15:55 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,20 @@ void	ft_export(t_command *command, char **m_envp, int *wstatus)
 	(*wstatus) = 0;
 }
 
-void	shlvlup2(char **m_envp, char *temp_num, int i)
+int	shlvlup2(char **m_envp, char *temp_num, int i)
 {
 	char	*shlvl_envp;
 
 	shlvl_envp = ft_strjoin("SHLVL=", temp_num);
+	free(temp_num);
 	if (!shlvl_envp)
-	{
-		free(temp_num);
-		return ; 
-	}
+		return (0);
+	free(m_envp[i]);
 	m_envp[i] = shlvl_envp;
+	return (1);
 }
 
-void	shlvlup(char **m_envp)
+int	shlvlup(char **m_envp)
 {
 	char	*shlvl_envp;
 	char	*temp_num;
@@ -87,23 +87,19 @@ void	shlvlup(char **m_envp)
 	int		i;
 
 	shlvl_envp = find_var_envp(m_envp, "SHLVL", 0);
-	if(!shlvl_envp)
-		return ;
+	if (!shlvl_envp)
+		return (0);
 	i = 0;
-	while(m_envp[i] != shlvl_envp)
+	while (m_envp[i] != shlvl_envp - 6)
 		i++;
-	shlvl = ft_atoi((shlvl_envp + 6));
-
+	shlvl = ft_atoi((shlvl_envp));
 	if (shlvl <= 0 || shlvl >= 1000)
-		return ;
+		return (0);
 	shlvl += 1;
-
 	if (shlvl == 1000)
 		shlvl = 1;
 	temp_num = ft_itoa(shlvl);
-
 	if (!temp_num)
-		return ; 
-	free(shlvl_envp);
-	shlvlup2(m_envp, temp_num, i);
+		return (0);
+	return (shlvlup2(m_envp, temp_num, i));
 }

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:02:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:18:40 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:52:04 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_exit2(t_command *command, char **m_envp, int *wstatus, int i)
 	int		flag;
 
 	flag = 0;
-	printf("exit\n");
 	if (i == 1)
 	{
 		ft_free(command, NULL, m_envp, WEXITSTATUS((*wstatus)));
@@ -68,4 +67,3 @@ void	ft_exit(t_command *command, char **m_envp, int *wstatus)
 		return ;
 	}
 }
-

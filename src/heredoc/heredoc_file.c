@@ -6,11 +6,17 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:09:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/24 01:27:08 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:31:44 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	return_parse_error(t_command *command)
+{
+	command->invalid = 1;
+	return ;
+}
 
 void	create_file_name(size_t nb, char *file_name, size_t temp, size_t count)
 {
@@ -42,8 +48,8 @@ void	create_file_name(size_t nb, char *file_name, size_t temp, size_t count)
 
 char	*generate_file(size_t *count)
 {
-	char *file_name;
-	
+	char	*file_name;
+
 	file_name = NULL;
 	while (!file_name)
 	{

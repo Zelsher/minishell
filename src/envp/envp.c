@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:38:36 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:16:44 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	envp_cpy(char **m_envp, char **envp)
 		i++;
 	}
 	m_envp[j] = NULL;
+	if (!shlvlup(m_envp))
+		ft_free(NULL, NULL, m_envp, 1);
 }
 
 int	same_var(char *m_envp_var, char *var)
@@ -43,7 +45,7 @@ int	same_var(char *m_envp_var, char *var)
 	size_t	i;
 
 	i = 0;
-	if(!var)
+	if (!var)
 		return (0);
 	if (var[0] == '?')
 		return (1);

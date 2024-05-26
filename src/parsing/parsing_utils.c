@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:32:40 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:09:13 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ t_command	*put_p_arg(t_command *command)
 	command->cmd = command->arg[0];
 	while (command->arg[i] && i < 200)
 	{
-		if (!command->p_opt && i == 1 && command->arg[i][0] == '-') //repere option
+		if (!command->p_opt && i == 1 && command->arg[i][0] == '-')
 			command->p_opt = command->arg[i];
-		else if (!command->p_file && i >= 1 && command->arg[i][0] != '-') //repere file
+		else if (!command->p_file && i >= 1 && command->arg[i][0] != '-')
 			command->p_file = command->arg[i];
 		i++;
 	}
@@ -60,6 +60,7 @@ t_command	*put_p_arg(t_command *command)
 		command->invalid = 7;
 	return (command);
 }
+
 void	skip_ispace(char *new_command, t_parse *parse)
 {
 	while (is_in(new_command[parse->i], "\t\v\n\r "))

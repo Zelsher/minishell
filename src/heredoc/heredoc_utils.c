@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:46:07 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:11:34 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,15 @@ void	handle_var_malloc_heredoc(char *reader, char **m_envp, t_parse *parse)
 
 char	*malloc_heredoc_line(char *reader, char **m_envp)
 {
-	t_parse	    parse;
+	t_parse		parse;
 	char		*here_doc_line;
 
 	parse_construct(&parse);
 	while (reader[parse.i])
 	{
-		if (reader[parse.i] == '$' && (ft_isalnum(reader[parse.i + 1]) || reader[parse.i + 1] == '?'))//new_command[parse->i] == '$' && (ft_isalnum(new_command[parse.i + 1]
+		if (reader[parse.i] == '$'
+			&& (ft_isalnum(reader[parse.i + 1])
+				|| reader[parse.i + 1] == '?'))
 			handle_var_malloc_heredoc(reader, m_envp, &parse);
 		else
 		{
@@ -60,7 +62,8 @@ char	*malloc_heredoc_line(char *reader, char **m_envp)
 	return (here_doc_line);
 }
 
-void	handle_var_line_heredoc(char *reader, char *here_doc_line, char **m_envp, t_parse *parse)
+void	handle_var_line_heredoc(char *reader, char *here_doc_line,
+	char **m_envp, t_parse *parse)
 {
 	if (find_var_envp(m_envp, reader + parse->i + 1, 0))
 	{
@@ -81,7 +84,9 @@ int	create_heredoc_line(char *reader, char *here_doc_line, char **m_envp)
 	parse_construct(&parse);
 	while (reader[parse.i])
 	{
-		if (reader[parse.i] == '$' && (ft_isalnum(reader[parse.i + 1]) || reader[parse.i + 1] == '?'))
+		if (reader[parse.i] == '$'
+			&& (ft_isalnum(reader[parse.i + 1])
+				|| reader[parse.i + 1] == '?'))
 			handle_var_line_heredoc(reader, here_doc_line, m_envp, &parse);
 		else
 		{

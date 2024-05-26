@@ -6,6 +6,7 @@ SRC_PARSE		= parsing/
 SRC_HEREDOC		= heredoc/
 SRC_OTHER		= other/
 SRC_EXEC		= exec/
+SRC_ENVP		= envp/
 OBJ_DIR			= obj/
 LIBFT			= Libft/libft.a
 
@@ -17,8 +18,9 @@ SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)minishell.c \
 					$(SRC_DIR)$(SRC_OTHER)ft_free.c \
 					$(SRC_DIR)$(SRC_OTHER)signal.c \
-					$(SRC_DIR)$(SRC_OTHER)envp.c \
 					$(SRC_DIR)$(SRC_OTHER)history.c \
+					$(SRC_DIR)$(SRC_ENVP)envp.c \
+					$(SRC_DIR)$(SRC_ENVP)env_exec.c \
 					$(SRC_DIR)$(SRC_PARSE)parse.c \
 					$(SRC_DIR)$(SRC_PARSE)parsing_utils.c \
 					$(SRC_DIR)$(SRC_PARSE)arg_malloc.c \
@@ -28,7 +30,6 @@ SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)$(SRC_HEREDOC)heredoc_utils.c \
 					$(SRC_DIR)$(SRC_EXEC)pipe.c \
 					$(SRC_DIR)$(SRC_EXEC)builtin.c \
-					$(SRC_DIR)$(SRC_EXEC)env_exec.c \
 					$(SRC_DIR)$(SRC_EXEC)exec.c \
 					$(SRC_DIR)$(SRC_EXEC)exit.c \
 					$(SRC_DIR)$(SRC_EXEC)pathfinder.c \

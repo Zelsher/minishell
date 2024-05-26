@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 19:09:32 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:36:54 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ void	error_command(t_command *command, char **m_envp, int *wstatus)
 
 void	ft_executable(t_command *command, char **m_envp, int *wstatus)
 {
-	struct stat path_stat;
+	struct stat	path_stat;
 
-	//shlvlup(m_envp);
 	execve(command->cmd, command->arg, m_envp);
 	(*wstatus) = errno;
 	stat(command->cmd, &path_stat);
-	//printf("%s\n", command->cmd);
 	if (access(command->cmd, F_OK))
 	{
 		(*wstatus) = 127;

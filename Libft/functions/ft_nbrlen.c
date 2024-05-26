@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2023/08/24 16:56:25 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:53:04 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-int   ft_nbrlen(long long int num)
+int	ft_nbrlen(long long int num)
 {
-    int len;
+	int	len;
 
-    len = 1;
-    while (num >= 10)
-    {
-        num /= 10;
-        len++;
-    }
-    return (len);
+	len = 1;
+	while (num >= 10)
+	{
+		num /= 10;
+		len++;
+	}
+	return (len);
 }
