@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 18:56:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:26:38 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	SIGNAL_Handler(int signal)
 {
 	if (signal == SIGINT && (!g_exec_pid || g_exec_pid == -1))
 	{
+		printf("\n");
+		rl_on_new_line();
 		rl_replace_line("", 1);
-		printf("\x1B[1;31m\n$\x1B[0m");
+		//printf("\r\x1B[1;31m$\x1B[0m");
 		rl_redisplay();
 		g_exec_pid = -1;
 		return;
