@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:58:11 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 23:49:31 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:46:27 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_unset(t_command *command, char **m_envp)
 		i++;
 	while (command->arg[i] != NULL)
 	{
-		UNSET_Envp(m_envp, command->arg[i]);
+		unset_envp(m_envp, command->arg[i]);
 		i++;
 	}
 }
@@ -51,7 +51,7 @@ void	ft_export(t_command *command, char **m_envp, int *wstatus)
 	{
 		while (command->arg[i] != NULL)
 		{
-			verif = EXPORT_Envp(m_envp, command->arg[i]);
+			verif = export_envp(m_envp, command->arg[i]);
 			(*wstatus) = verif;
 			if (verif != 0 && flag == 0)
 			{
@@ -86,7 +86,7 @@ void	shlvlup(char **m_envp)
 	int		shlvl;
 	int		i;
 
-	shlvl_envp = FIND_Var_Envp(m_envp, "SHLVL", 0);
+	shlvl_envp = find_var_envp(m_envp, "SHLVL", 0);
 	if(!shlvl_envp)
 		return ;
 	i = 0;

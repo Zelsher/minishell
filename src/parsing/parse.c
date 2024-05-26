@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 11:16:53 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:44:38 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	TOKEN_Identifier(char *new_command, t_command *command, int *j, int i)
+void	token_identifier(char *new_command, t_command *command, int *j, int i)
 {
 	if (new_command[0] == '>' && new_command[1] == '>')
 		command->token = 'r';
@@ -38,7 +38,7 @@ void	TOKEN_Identifier(char *new_command, t_command *command, int *j, int i)
 }
 
 //Cherche les tokens, ignore les token entre quote#include "../inc/minishell.h"
-int	TOKENER(char *new_command, t_command *command, int *j, char *tokens)
+int	tokener(char *new_command, t_command *command, int *j, char *tokens)
 {
 	int	i;
 	int	quote;
@@ -52,7 +52,7 @@ int	TOKENER(char *new_command, t_command *command, int *j, char *tokens)
 		else if ((new_command[i] == 34 || new_command[i] == 39) && !quote)
 			quote = new_command[i];
 		if (is_in(new_command[i], tokens) && !quote)
-			return (TOKEN_Identifier(new_command + i, command, j, i), 1);
+			return (token_identifier(new_command + i, command, j, i), 1);
 		i++;
 	}
 	if (quote)
@@ -60,7 +60,7 @@ int	TOKENER(char *new_command, t_command *command, int *j, char *tokens)
 	return (0);
 }
 
-int	REDIRECT_Init(t_command *command)
+int	redirect_init(t_command *command)
 {
 	t_command	*temp;
 	int			i;
@@ -81,47 +81,47 @@ int	REDIRECT_Init(t_command *command)
 }
 
 //Parcours la commande, si un token est trouver, la fonction est rappeler pour la string avant le token, et apres.
-t_command	*RECURSIVE_Parse(t_mshell *m_shell, char *new_command, int i, char token)
+t_command	*recursive_parse(t_mshell *m_shell, char *new_command, int i, char token)
 {
 	t_command	*command;
 
-	command = CMD_Construct(m_shell, token);
+	command = cmd_construct(m_shell, token);
 	if (!command)
 		return (NULL);
-	if (TOKENER(new_command, command, &i, "|&"))
+	if (tokener(new_command, command, &i, "|&"))
 	{
-		command->left = RECURSIVE_Parse(m_shell, new_command, 0, command->token);
-		command->right = RECURSIVE_Parse(m_shell, new_command + i, 0, command->token);
+		command->left = recursive_parse(m_shell, new_command, 0, command->token);
+		command->right = recursive_parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
-			return (FREE_Command(command), NULL);
+			return (free_command(command), NULL);
 	}
-	if (TOKENER(new_command, command, &i, "<>"))
+	if (tokener(new_command, command, &i, "<>"))
 	{
-		command->left = RECURSIVE_Parse(m_shell, new_command, 0, '0');
-		command->right = RECURSIVE_Parse(m_shell, new_command + i, 0, command->token);
+		command->left = recursive_parse(m_shell, new_command, 0, '0');
+		command->right = recursive_parse(m_shell, new_command + i, 0, command->token);
 		if (!command->left || !command->right)
-			return (FREE_Command(command), NULL);
-		if (!REDIRECT_Init(command))
-			return (FREE_Command(command), NULL);
+			return (free_command(command), NULL);
+		//if (!REDIRECT_Init(command))
+		//	return (FREE_Command(command), NULL);
 	}
 	if (!command->token)
-		command = CMD_Filler(m_shell, new_command, command, token);
+		command = cmd_filler(m_shell, new_command, command, token);
 	return (command);
 }
 
-t_command	*CMD_Parse(t_mshell *m_shell, char *new_command, char **m_envp, int *wstatus)
+t_command	*cmd_parse(t_mshell *m_shell, char *new_command, char **m_envp, int *wstatus)
 {
 	t_command	*command;
 
-	command = RECURSIVE_Parse(m_shell, new_command, 0, 't');
+	command = recursive_parse(m_shell, new_command, 0, 't');
 	free(new_command);
 	if (!command)
 		ft_free(command, NULL, m_envp, 1);
-	if (!CMD_Verifier(command, wstatus))
+	if (!cmd_verifier(command, wstatus))
 	{
-		if (!UPDATE_Wstatus(m_envp, wstatus, 0))
+		if (!update_wstatus(m_envp, wstatus, 0))
 			return (ft_free(command, NULL, m_envp, 1), NULL);
-		return (FREE_Command(command), NULL);
+		return (free_command(command), NULL);
 	}
 	return (command);
 }

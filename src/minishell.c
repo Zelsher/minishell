@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 19:12:36 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:43:48 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	UPDATE_Wstatus(char **m_envp, int *wstatus, int flag)
+int	update_wstatus(char **m_envp, int *wstatus, int flag)
 {
 	int	i;
 	char	*char_wstatus;
@@ -60,25 +60,25 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 		(*wstatus) = 128 + g_exec_pid * (-1);
 		ft_free(command, NULL, NULL, 0);
 		g_exec_pid = 0;
-		if (!UPDATE_Wstatus(m_envp, wstatus, 0))
+		if (!update_wstatus(m_envp, wstatus, 0))
 			ft_free(command, NULL, m_envp, 1);
 		return ;
 	}
 	g_exec_pid = 0;
 	ft_free(command, NULL, NULL, 0);
-	if (!UPDATE_Wstatus(m_envp, wstatus, 1))
+	if (!update_wstatus(m_envp, wstatus, 1))
 		ft_free(command, NULL, m_envp, 1);
 	//printf("%s\n", m_envp[0]);
 }
 
-void	USE_Command(t_mshell *m_shell, char *new_command,
+void	use_command(t_mshell *m_shell, char *new_command,
 	int *wstatus, char **m_envp)
 {
 	t_command	*command;
 	int			verif;
 
 	verif = 0;
-	command = CMD_Parse(m_shell, new_command, m_envp, wstatus);
+	command = cmd_parse(m_shell, new_command, m_envp, wstatus);
 	print_cmd(command, 0);
 	if (command && g_exec_pid != -1)
 	{
@@ -88,7 +88,7 @@ void	USE_Command(t_mshell *m_shell, char *new_command,
 			return ;
 		}
 		else
-			verif = UPDATE_Wstatus(m_envp, wstatus, 0);
+			verif = update_wstatus(m_envp, wstatus, 0);
 		if (!verif)
 			ft_free(command, NULL, m_envp, 1);
 	}
@@ -108,17 +108,17 @@ void	minishell(t_mshell *m_shell)
 		if (g_exec_pid)
 		{
 			wstatus = 130;
-			if (!UPDATE_Wstatus(m_shell->m_envp, &wstatus, 0))
+			if (!update_wstatus(m_shell->m_envp, &wstatus, 0))
 				ft_free(NULL, m_shell->new_command, m_shell->m_envp, 1);
 		}
 		m_shell->line++;
 		g_exec_pid = 0;
 		if (!m_shell->new_command)
 			ft_free(NULL, NULL, m_shell->m_envp, 1);
-		if (m_shell->new_command[0] != 0 && !IS_Last_Cmd(m_shell->new_command))
+		if (m_shell->new_command[0] != 0 && !is_last_cmd(m_shell->new_command))
 			add_history(m_shell->new_command);
 		if (m_shell->new_command)
-			USE_Command(m_shell, m_shell->new_command,
+			use_command(m_shell, m_shell->new_command,
 				&wstatus, m_shell->m_envp);
 	}
 }

@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 19:26:38 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:44:17 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	SIGNAL_Handler(int signal)
+void	signal_handler(int signal)
 {
 	if (signal == SIGINT && (!g_exec_pid || g_exec_pid == -1))
 	{
@@ -31,9 +31,9 @@ void	SIGNAL_Handler(int signal)
 	}
 }
 
-int	INIT_Receive_Signal(struct sigaction *sa)
+int	init_receive_signal(struct sigaction *sa)
 {
-	sa->sa_handler = SIGNAL_Handler;
+	sa->sa_handler = signal_handler;
 	sigemptyset(&sa->sa_mask);
 	sa->sa_flags = 0;
 	if (sigaction(SIGINT, sa, NULL) == -1)

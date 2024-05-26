@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/12 18:32:33 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:37:15 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	PRINT_History(void)
+void	print_history(void)
 {
 	HIST_ENTRY	**history;
 	int			i;
@@ -26,7 +26,7 @@ void	PRINT_History(void)
 	}
 }
 
-int	IS_Last_Cmd(const char *new_command)
+int	is_last_cmd(const char *new_command)
 {
 	HIST_ENTRY	**history;
 	int			i;

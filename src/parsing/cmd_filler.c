@@ -6,17 +6,17 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 16:55:57 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:36:05 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	HANDLE_Var(char *new_command, char *arg, char **m_envp, t_parse *parse)
+void	handle_var(char *new_command, char *arg, char **m_envp, t_parse *parse)
 {
 	char	*var;
 
-	var = FIND_Var_Envp(m_envp, new_command + parse->i + 1, 0);
+	var = find_var_envp(m_envp, new_command + parse->i + 1, 0);
 	if (var)
 	{
 		ft_strcpy(arg + parse->j, var);
@@ -32,7 +32,7 @@ void	HANDLE_Var(char *new_command, char *arg, char **m_envp, t_parse *parse)
 		parse->i++;
 }
 
-void	HANDLE_Quote(char *new_command, char *arg,
+void	handle_quote(char *new_command, char *arg,
 char **m_envp, t_parse *parse)
 {
 	parse->quote = new_command[parse->i];
@@ -41,7 +41,7 @@ char **m_envp, t_parse *parse)
 	{
 		if (parse->quote == 34 && new_command[parse->i] == '$' && (ft_isalnum(new_command[parse->i + 1]) || new_command[parse->i + 1] == '?') 
 			&& new_command[parse->i + 1] != parse->quote)
-			HANDLE_Var(new_command, arg, m_envp, parse);
+			handle_var(new_command, arg, m_envp, parse);
 		else
 		{
 			arg[parse->j] = new_command[parse->i];
@@ -52,17 +52,17 @@ char **m_envp, t_parse *parse)
 	parse->i++;
 }
 
-int	ARGER(char *new_command, char *arg, char **m_envp)
+int	arger(char *new_command, char *arg, char **m_envp)
 {
 	t_parse	parse;
 
-	PARSE_Construct(&parse);
+	parse_construct(&parse);
 	while (new_command[parse.i] && !is_in(new_command[parse.i], "\t\v\n\r "))
 	{
 		if (is_quote(new_command[parse.i]))
-			HANDLE_Quote(new_command, arg, m_envp, &parse);
+			handle_quote(new_command, arg, m_envp, &parse);
 		else if (new_command[parse.i] == '$' && (ft_isalnum(new_command[parse.i + 1]) || new_command[parse.i + 1] == '?'))
-			HANDLE_Var(new_command, arg, m_envp, &parse);
+			handle_var(new_command, arg, m_envp, &parse);
 		else
 		{
 			arg[parse.j] = new_command[parse.i];
@@ -74,7 +74,7 @@ int	ARGER(char *new_command, char *arg, char **m_envp)
 		arg[parse.j] = '\0';
 	return (parse.i);
 }
-void	UPDATE_Arg(t_command *command, t_parse *parse)
+void	update_arg(t_command *command, t_parse *parse)
 {
 	if (!command->arg)
 	{
@@ -90,14 +90,14 @@ void	UPDATE_Arg(t_command *command, t_parse *parse)
 	}
 }
 
-t_command	*CMD_Filler(t_mshell *m_shell, char *new_command, t_command *command, char token)
+t_command	*cmd_filler(t_mshell *m_shell, char *new_command, t_command *command, char token)
 {
 	t_parse	parse;
 
-	PARSE_Construct(&parse);
+	parse_construct(&parse);
 	if (token == 'h')
 	{
-		HEREDOC(m_shell, command, &parse, new_command);
+		heredoc(m_shell, command, &parse, new_command);
 		command->arg[0] = strdup(command->heredoc);
 		command->cmd = command->arg[0];
 		if (!command->arg[0])
@@ -110,11 +110,11 @@ t_command	*CMD_Filler(t_mshell *m_shell, char *new_command, t_command *command, 
 		skip_ispace(new_command, &parse);
 		if (!new_command[parse.i])
 			break;
-		command->arg[parse.j] = ARG_Malloc(command, new_command + parse.i, m_shell->m_envp);
+		command->arg[parse.j] = arg_malloc(command, new_command + parse.i, m_shell->m_envp);
 		if (command->invalid || parse.i == 201)
-			return (FREE_Command(command), NULL);
-		parse.i += ARGER(new_command + parse.i, command->arg[parse.j], m_shell->m_envp);
-		UPDATE_Arg(command, &parse);
+			return (free_command(command), NULL);
+		parse.i += arger(new_command + parse.i, command->arg[parse.j], m_shell->m_envp);
+		update_arg(command, &parse);
 	}
-	return (PUT_P_Arg(command));
+	return (put_p_arg(command));
 }

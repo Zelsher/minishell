@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:58:16 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:18:43 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:46:42 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*pathfinder(t_command *command, char **m_envp, int *flag)
 
 	if (ft_strchr(command->cmd, '/'))
 		return ((*flag)++, command->cmd);
-	path_temp = ft_split((FIND_Var_Envp(m_envp, "PATH", 0) + 5), ':');
+	path_temp = ft_split((find_var_envp(m_envp, "PATH", 0) + 5), ':');
 	if (!path_temp)
 		return (NULL);
 	path_list = putlastslash(path_temp);

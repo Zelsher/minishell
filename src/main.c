@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 17:46:27 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:32:22 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	main(int argc, char **argv, char **envp)
 	char				*m_envp[1000];
 	struct sigaction	sa;
 
-	ENVP_Cpy(m_envp, envp);
-	if (!INIT_Receive_Signal(&sa))
+	envp_cpy(m_envp, envp);
+	if (!init_receive_signal(&sa))
 		return (ft_free(NULL, NULL, m_envp, 1), 1);
 	m_shell.m_envp = m_envp;
 	m_shell.command = NULL;

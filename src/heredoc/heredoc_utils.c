@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 23:49:18 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:46:07 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ char	*find_delimiter(char *new_command, t_parse *parse)
 	return (p_delimiter);
 }
 
-void	Handle_Var_Malloc_Heredoc(char *reader, char **m_envp, t_parse *parse)
+void	handle_var_malloc_heredoc(char *reader, char **m_envp, t_parse *parse)
 {
-	if (FIND_Var_Envp(m_envp, reader + parse->i + 1, 0))
+	if (find_var_envp(m_envp, reader + parse->i + 1, 0))
 		parse->j += ft_strlen(
-				FIND_Var_Envp(m_envp, reader + parse->i + 1, 0));
+				find_var_envp(m_envp, reader + parse->i + 1, 0));
 	while (reader[parse->i] && !is_quote(reader[parse->i])
 		&& !is_in(reader[parse->i], "\t\v\n\r "))
 		parse->i++;
 }
 
-char	*MALLOC_Heredoc_Line(char *reader, char **m_envp)
+char	*malloc_heredoc_line(char *reader, char **m_envp)
 {
 	t_parse	    parse;
 	char		*here_doc_line;
 
-	PARSE_Construct(&parse);
+	parse_construct(&parse);
 	while (reader[parse.i])
 	{
 		if (reader[parse.i] == '$' && (ft_isalnum(reader[parse.i + 1]) || reader[parse.i + 1] == '?'))//new_command[parse->i] == '$' && (ft_isalnum(new_command[parse.i + 1]
-			Handle_Var_Malloc_Heredoc(reader, m_envp, &parse);
+			handle_var_malloc_heredoc(reader, m_envp, &parse);
 		else
 		{
 			parse.i++;
@@ -60,29 +60,29 @@ char	*MALLOC_Heredoc_Line(char *reader, char **m_envp)
 	return (here_doc_line);
 }
 
-void	HANDLE_Var_Line_Heredoc(char *reader, char *here_doc_line, char **m_envp, t_parse *parse)
+void	handle_var_line_heredoc(char *reader, char *here_doc_line, char **m_envp, t_parse *parse)
 {
-	if (FIND_Var_Envp(m_envp, reader + parse->i + 1, 0))
+	if (find_var_envp(m_envp, reader + parse->i + 1, 0))
 	{
 		ft_strcpy(here_doc_line + parse->j,
-			FIND_Var_Envp(m_envp, reader + parse->i + 1, 0));
+			find_var_envp(m_envp, reader + parse->i + 1, 0));
 		parse->j += ft_strlen(
-				FIND_Var_Envp(m_envp, reader + parse->i + 1, 0));
+				find_var_envp(m_envp, reader + parse->i + 1, 0));
 	}
 	while (reader[parse->i] && !is_quote(reader[parse->i])
 		&& !is_in(reader[parse->i], "\t\v\n\r "))
 		parse->i++;
 }
 
-int	CREATE_Heredoc_Line(char *reader, char *here_doc_line, char **m_envp)
+int	create_heredoc_line(char *reader, char *here_doc_line, char **m_envp)
 {
 	t_parse	parse;
 
-	PARSE_Construct(&parse);
+	parse_construct(&parse);
 	while (reader[parse.i])
 	{
 		if (reader[parse.i] == '$' && (ft_isalnum(reader[parse.i + 1]) || reader[parse.i + 1] == '?'))
-			HANDLE_Var_Line_Heredoc(reader, here_doc_line, m_envp, &parse);
+			handle_var_line_heredoc(reader, here_doc_line, m_envp, &parse);
 		else
 		{
 			here_doc_line[parse.j] = reader[parse.i];

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 01:41:10 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:38:00 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_single_command(t_command *command)
 	return ;
 }
 
-void	FREE_Command(t_command *command)
+void	free_command(t_command *command)
 {
 	int	i;
 
@@ -56,9 +56,9 @@ void	FREE_Command(t_command *command)
 	if (!command)
 		return ;
 	if (command->left)
-		FREE_Command(command->left);
+		free_command(command->left);
 	if (command->right)
-		FREE_Command(command->right);
+		free_command(command->right);
 	while (command->arg[i])
 	{
 		free(command->arg[i]);
@@ -76,7 +76,7 @@ void	FREE_Command(t_command *command)
 
 void	ft_free(t_command *command, char *new_command, char **m_envp, int m_exit)
 {
-	FREE_Command(command);
+	free_command(command);
 	ft_free_envp(m_envp);
 	if (new_command)
 	{
@@ -87,7 +87,7 @@ void	ft_free(t_command *command, char *new_command, char **m_envp, int m_exit)
 		exit(m_exit);
 }
 
-int	CMD_Verifier(t_command *command, int *wstatus)
+int	cmd_verifier(t_command *command, int *wstatus)
 {
 	int	verif;
 
@@ -99,11 +99,11 @@ int	CMD_Verifier(t_command *command, int *wstatus)
 	else if ( (!command->token && !command->cmd))
 		return (0);
 	if (command->left)
-		verif = CMD_Verifier(command->left, wstatus);
+		verif = cmd_verifier(command->left, wstatus);
 	if (verif == 0)
 		return (verif);
 	if (command->right)
-		verif = CMD_Verifier(command->right, wstatus);
+		verif = cmd_verifier(command->right, wstatus);
 	if (verif == 0)
 		return (verif);
 	return (verif);

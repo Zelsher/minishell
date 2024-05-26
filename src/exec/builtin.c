@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 11:20:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:42:35 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_cd2(t_command *command, char **m_envp, int *wstatus)
 {
 	char	*home;
 
-	home = FIND_Var_Envp(m_envp, "HOME", 0);
+	home = find_var_envp(m_envp, "HOME", 0);
 	if (home)
 	{
 		if (chdir(home) == 0)
@@ -98,7 +98,7 @@ int	built_in(t_command *command, char **m_envp, int *wstatus)
 	else if (ft_strcmp(command->cmd, "echo") == 0)
 		return (ft_echo(command), 1);
 	else if (ft_strcmp(command->cmd, "history") == 0)
-		return (PRINT_History(), 1);
+		return (print_history(), 1);
 	else if (ft_strcmp(command->cmd, "env") == 0)
 		return (ft_env(m_envp), 1);
 	else if (ft_strcmp(command->cmd, "pwd") == 0)

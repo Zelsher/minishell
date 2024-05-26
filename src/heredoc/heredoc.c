@@ -6,22 +6,22 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/24 16:05:26 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:39:55 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*HEREDOC_Liner(char *reader, char **m_envp, int fd)
+char	*heredoc_liner(char *reader, char **m_envp, int fd)
 {
 	char	*heredoc_line;
 	
 	if (!reader)
 		return(NULL);
-	heredoc_line = MALLOC_Heredoc_Line(reader, m_envp);
+	heredoc_line = malloc_heredoc_line(reader, m_envp);
 	if (heredoc_line)
 	{
-		CREATE_Heredoc_Line(reader, heredoc_line, m_envp);
+		create_heredoc_line(reader, heredoc_line, m_envp);
 		ft_putstr_fd(heredoc_line, fd);
 		free(heredoc_line);
 		//free(reader);
@@ -30,7 +30,7 @@ char	*HEREDOC_Liner(char *reader, char **m_envp, int fd)
 	return (NULL);
 }
 
-int	HEREDOCKER(t_mshell *m_shell, char *file_name, char *delimiter)
+int	heredocker(t_mshell *m_shell, char *file_name, char *delimiter)
 {
 	char 	*reader;
 	int		line;
@@ -52,14 +52,14 @@ int	HEREDOCKER(t_mshell *m_shell, char *file_name, char *delimiter)
 			m_shell += line;
 			break;
 		}
-		HEREDOC_Liner(reader, m_shell->m_envp, fd);
+		heredoc_liner(reader, m_shell->m_envp, fd);
 		line++;
 	}
 	close(fd);
 	return (free(file_name), 1);
 }
 
-int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command)
+int	heredoc(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command)
 {
 	static size_t	count;
 	char			*delimiter;
@@ -76,9 +76,9 @@ int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_com
 	if (g_exec_pid == 0)
 	{
 		g_exec_pid = -2;
-		FREE_Command(m_shell->command);
+		free_command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
-			HEREDOCKER(m_shell, file_name, delimiter));
+			heredocker(m_shell, file_name, delimiter));
 	}
 	waitpid(g_exec_pid, &verif, 0);
 	if (verif == -1)

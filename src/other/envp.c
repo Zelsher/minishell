@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 23:49:41 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:38:36 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ENVP_Cpy(char **m_envp, char **envp)
+void	envp_cpy(char **m_envp, char **envp)
 {
 	int	i;
 	int	j;
@@ -72,7 +72,7 @@ int	verify_var(char *var)
 	return (-1);
 }
 
-int	EXPORT_Envp(char **m_envp, char *cmd)
+int	export_envp(char **m_envp, char *cmd)
 {
 	int		i;
 	char	*var;
@@ -100,7 +100,7 @@ int	EXPORT_Envp(char **m_envp, char *cmd)
 	return (0);
 }
 
-void	UNSET_Envp(char **m_envp, char *cmd)
+void	unset_envp(char **m_envp, char *cmd)
 {
 	int	i;
 
@@ -128,7 +128,7 @@ void	UNSET_Envp(char **m_envp, char *cmd)
 	}
 }
 
-char	*FIND_Var_Envp(char **m_envp, char *var, int verif)
+char	*find_var_envp(char **m_envp, char *var, int verif)
 {
 	int	i;
 	int	j;

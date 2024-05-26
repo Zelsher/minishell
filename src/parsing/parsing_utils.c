@@ -6,13 +6,13 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 01:06:43 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:32:40 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd)
+t_command	*cmd_construct(t_mshell *m_shell, char first_cmd)
 {
 	t_command	*command;
 
@@ -35,14 +35,14 @@ t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd)
 	return (command);
 }
 
-void	PARSE_Construct(t_parse *parse)
+void	parse_construct(t_parse *parse)
 {
 	parse->i = 0;
 	parse->j = 0;
 	parse->quote = 0;
 }
 
-t_command	*PUT_P_Arg(t_command *command)
+t_command	*put_p_arg(t_command *command)
 {
 	int	i;
 
