@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 01:32:12 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 01:41:10 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@ void	ft_free_envp(char **m_envp)
 		free(m_envp[i]);
 		i++;
 	}
+}
+
+void	free_single_command(t_command *command)
+{
+	int	i;
+
+	i = 0;
+	if (!command)
+		return ;
+	while (command->arg[i])
+	{
+		free(command->arg[i]);
+		command->arg[i] = NULL;
+		i++;
+	}
+	if (command->heredoc)
+	{
+		unlink(command->heredoc);
+		free(command->heredoc);
+	}
+	free(command);
+	return ;
 }
 
 void	FREE_Command(t_command *command)
@@ -198,7 +220,7 @@ void	ft_print_command_tree(t_command *command, char *branch, int i)
 		ft_print_command_tree(command->right, "right", i + 1);
 }
 
-void	print_cmd(t_command *command)
+void	print_cmd(t_command *command, int a)
 {
 	static int	show;
 
@@ -210,4 +232,5 @@ void	print_cmd(t_command *command)
 		ft_print_command_tree(command, "tree", 1);
 	if (command->arg[0] && !ft_strcmp(command->arg[0], "show"))
 		show = 1;
+	(void)a;
 }

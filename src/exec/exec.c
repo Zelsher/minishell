@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/24 15:31:14 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 02:06:13 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,6 @@ void	ft_executable(t_command *command, char **m_envp, int *wstatus)
 	exit ((*wstatus));
 }
 
-int	pipecmd(t_command *command, char **m_envp, int *wstatus)
-{
-	int	pipefd[2];
-	int	p_id;
-
-	if (pipe(pipefd) < 0)
-		return (printerr(2, "minishell: ", "pipe has failed", 0), exit(1), 1);
-	p_id = fork();
-	if (p_id < 0)
-		return (printerr(2, "minishell: ", "pipe has failed", 0), exit(1), 1);
-	else if (p_id == 0)
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		ft_exec(command->right, m_envp, wstatus);
-		close(pipefd[0]);
-	}
-	else
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		ft_exec(command->left, m_envp, wstatus);
-		close(pipefd[1]);
-		waitpid(p_id, wstatus, 0);
-	}
-	return (0);
-}
-
 void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 {
 	int		flag;
@@ -98,7 +70,7 @@ void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 	else if (command->token == 'r')
 		redir_output_append(command, m_envp, wstatus);
 	else if (command->token == 'h')
-		redir_input(command, m_envp, wstatus);
+		redir_heredoc(command, m_envp, wstatus);
 	else if (built_in(command, m_envp, wstatus) == 1)
 		ft_free(command, NULL, m_envp, (*wstatus));
 	else if (command->cmd && command->cmd[0] == '.' && command->cmd[1] == '/' )
@@ -107,7 +79,7 @@ void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 		ft_do_command(command, m_envp, wstatus);
 	else
 	{
-		printf("bizzare la\n\n\n");
+		printf("\n\nbizzare la\n\n");
 		error_command(command, m_envp, wstatus);
 	}
 	exit ((*wstatus));

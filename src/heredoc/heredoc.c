@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/24 15:58:38 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:05:26 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	HEREDOCKER(t_mshell *m_shell, char *file_name, char *delimiter)
 	line = 0;
 	fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
-		return (-1);
+		return (free(file_name), -1);
 	while (1)
 	{
 		reader = readline(">");
@@ -56,7 +56,7 @@ int	HEREDOCKER(t_mshell *m_shell, char *file_name, char *delimiter)
 		line++;
 	}
 	close(fd);
-	return (1);
+	return (free(file_name), 1);
 }
 
 int	HEREDOC(t_mshell *m_shell, t_command *command, t_parse *parse, char *new_command)

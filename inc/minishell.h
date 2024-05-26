@@ -64,7 +64,7 @@ t_command	*CMD_Construct(t_mshell *m_shell, char first_cmd);
 void		PARSE_Construct(t_parse *parse);
 void		skip_ispace(char *new_command, t_parse *parse);
 void    	ft_print_command_tree(t_command *command, char *branch, int i);
-void		print_cmd(t_command *command);
+void		print_cmd(t_command *command, int a);
 
 /*Parsing*/
 t_command	*PUT_P_Arg(t_command *command);
@@ -93,7 +93,7 @@ void		PRINT_History();
 
 /*exec*/
 void		ft_exec(t_command *command, char **envp, int *wstatus);
-
+int			pipecmd(t_command *command, char **m_envp, int *wstatus);
 /*Builtins*/
 void		ft_env(char **m_envp);
 void		ft_echo(t_command *command);
@@ -122,7 +122,7 @@ void		ft_exit(t_command *command, char **m_envp, int *wstatus);
 void		redir_output_append(t_command *command, char **m_envp, int *wstatus);
 void		redir_output(t_command *command, char **m_envp, int *wstatus);
 void		redir_input(t_command *command, char **m_envp, int *wstatus);
-
+void		redir_heredoc(t_command *command, char **m_envp, int *wstatus);
 /*Signal*/
 void		SIGNAL_Handler(int signal);
 int			INIT_Receive_Signal(struct sigaction *sa);
@@ -130,6 +130,8 @@ int			INIT_Receive_Signal(struct sigaction *sa);
 void		FREE_Command(t_command *command);
 void		ft_free(t_command *command, char *new_command, char **m_envp, int m_exit);
 void 		return_parse_error(t_command *command);
+void		free_single_command(t_command *command);
+
 /*Minishell*/
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);

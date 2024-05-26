@@ -5,6 +5,8 @@ command1 -r --a file1 | command 2 -l file2 ; command3 -o file3
 
 echo '$?' "$?" "la $PATH ' $" 
 
+
+tester avec plusieurs < < > < pour voir comment le redir fonctionnent
 free de lexec
 pofiner le heredoc
 signaux, readline, dans le heredoc aussi

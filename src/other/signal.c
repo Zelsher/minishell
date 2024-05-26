@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/21 02:12:39 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/25 23:21:05 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	SIGNAL_Handler(int signal)
 {
+	printf("signal\n");
 	if (signal == SIGINT && g_exec_pid == -2)
 		exit(130);
 	else if (signal == SIGINT && (g_exec_pid == 0 || g_exec_pid == -1))
