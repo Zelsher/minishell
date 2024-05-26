@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 17:54:52 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:12:36 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	UPDATE_Wstatus(char **m_envp, int *wstatus, int flag)
 int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 {
 	if(ft_strcmp(command->cmd, "cd") == 0)
-		return(ft_cd(command, m_envp, wstatus), 0);
+		return (ft_cd(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
-		return (ft_exit(command, m_envp, wstatus), 0); 
+		return (ft_exit(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "export") == 0)
 		return (ft_export(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
@@ -47,7 +47,32 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 	return (1);
 }
 
-void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_envp)
+void	pre_exec(t_command *command, char **m_envp, int *wstatus)
+{
+	g_exec_pid = fork();
+	if (g_exec_pid == -1)
+		ft_free(command, NULL, m_envp, 1);
+	if (g_exec_pid == 0)
+		ft_exec(command, m_envp, wstatus);
+	waitpid(g_exec_pid, wstatus, 0);
+	if (g_exec_pid < 0)
+	{
+		(*wstatus) = 128 + g_exec_pid * (-1);
+		ft_free(command, NULL, NULL, 0);
+		g_exec_pid = 0;
+		if (!UPDATE_Wstatus(m_envp, wstatus, 0))
+			ft_free(command, NULL, m_envp, 1);
+		return ;
+	}
+	g_exec_pid = 0;
+	ft_free(command, NULL, NULL, 0);
+	if (!UPDATE_Wstatus(m_envp, wstatus, 1))
+		ft_free(command, NULL, m_envp, 1);
+	//printf("%s\n", m_envp[0]);
+}
+
+void	USE_Command(t_mshell *m_shell, char *new_command,
+	int *wstatus, char **m_envp)
 {
 	t_command	*command;
 	int			verif;
@@ -57,24 +82,10 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 	print_cmd(command, 0);
 	if (command && g_exec_pid != -1)
 	{
-		if(ft_builtins(command, wstatus, m_envp) != 0)
+		if (ft_builtins(command, wstatus, m_envp) != 0)
 		{
-			g_exec_pid = fork();
-			if (g_exec_pid == -1)
-				ft_free(command, NULL, m_envp, 1);
-			if (g_exec_pid == 0)
-				ft_exec(command, m_envp, wstatus);
-			waitpid(g_exec_pid, wstatus, 0);
-			if (g_exec_pid == -5)
-			{
-				(*wstatus) = 130;
-				printf("\n");
-				UPDATE_Wstatus(m_envp, wstatus, 0);
-				return;
-			}
-			g_exec_pid = 0;
-			ft_free(command, NULL, NULL, 0);
-			verif = UPDATE_Wstatus(m_envp, wstatus, 1);
+			pre_exec(command, m_envp, wstatus);
+			return ;
 		}
 		else
 			verif = UPDATE_Wstatus(m_envp, wstatus, 0);
@@ -85,24 +96,29 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 
 void	minishell(t_mshell *m_shell)
 {
-	char				*new_command;
 	int					wstatus;
 
 	wstatus = 0;
 	while (1)
 	{
 		if (wstatus)
-			new_command = readline("\x1B[1;31m$\x1B[0m");
+			m_shell->new_command = readline("\x1B[1;31m$\x1B[0m");
 		else
-			new_command = readline("\x1B[1;32m$\x1B[0m");
+			m_shell->new_command = readline("\x1B[1;32m$\x1B[0m");
+		if (g_exec_pid)
+		{
+			wstatus = 130;
+			if (!UPDATE_Wstatus(m_shell->m_envp, &wstatus, 0))
+				ft_free(NULL, m_shell->new_command, m_shell->m_envp, 1);
+		}
 		m_shell->line++;
 		g_exec_pid = 0;
-		if (!new_command)
+		if (!m_shell->new_command)
 			ft_free(NULL, NULL, m_shell->m_envp, 1);
-		if (new_command[0] != 0 && !IS_Last_Cmd(new_command))
-			add_history(new_command);
-		m_shell->new_command = new_command;
-		if (new_command)
-			USE_Command(m_shell, new_command, &wstatus, m_shell->m_envp);
+		if (m_shell->new_command[0] != 0 && !IS_Last_Cmd(m_shell->new_command))
+			add_history(m_shell->new_command);
+		if (m_shell->new_command)
+			USE_Command(m_shell, m_shell->new_command,
+				&wstatus, m_shell->m_envp);
 	}
 }

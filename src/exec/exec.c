@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 17:00:38 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:09:32 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 
 void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 {
+	g_exec_pid = -2;
 	if (command->token == '|')
 		pipecmd(command, m_envp, wstatus);
 	else if (command->token == '<')
@@ -90,7 +91,7 @@ void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 		redir_heredoc(command, m_envp, wstatus);
 	else if (built_in(command, m_envp, wstatus) == 1)
 		ft_free(command, NULL, m_envp, (*wstatus));
-	else if (command->cmd && command->cmd[0] == '.' && command->cmd[1] == '/' )
+	else if (command->cmd && ft_strchr(command->cmd, '/'))
 		ft_executable(command, m_envp, wstatus);
 	else if (command->token == 0)
 		ft_do_command(command, m_envp, wstatus);

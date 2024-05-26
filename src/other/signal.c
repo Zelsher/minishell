@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 17:55:34 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:56:13 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,18 @@
 
 void	SIGNAL_Handler(int signal)
 {
-	if (signal == SIGINT && g_exec_pid == -2)
-		exit(130);
-	else if (signal == SIGINT && (g_exec_pid == 0 || g_exec_pid == -1))
+	if (signal == SIGINT && (!g_exec_pid || g_exec_pid == -1))
 	{
 		rl_replace_line("", 1);
-		printf("\n$");
+		printf("\x1B[1;31m\n$\x1B[0m");
 		rl_redisplay();
 		g_exec_pid = -1;
 		return;
 	}
-	if (g_exec_pid == 131)
-		write (1, "Quit (core dumped)", 18);
-	if (signal == SIGINT && g_exec_pid)
+	else if (signal == SIGINT && g_exec_pid)
 	{
-		g_exec_pid = -5;
+		printf("\n");
+		g_exec_pid = signal * -1;
 	}
 }
 
@@ -38,6 +35,8 @@ int	INIT_Receive_Signal(struct sigaction *sa)
 	sigemptyset(&sa->sa_mask);
 	sa->sa_flags = 0;
 	if (sigaction(SIGINT, sa, NULL) == -1)
+		return (0);
+	if (sigaction(SIGQUIT, sa, NULL) == -1)
 		return (0);
 	return (1);
 }
