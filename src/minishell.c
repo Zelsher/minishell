@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 16:29:28 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:54:52 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 			if (g_exec_pid == -5)
 			{
 				(*wstatus) = 130;
+				printf("\n");
 				UPDATE_Wstatus(m_envp, wstatus, 0);
 				return;
 			}
@@ -90,7 +91,10 @@ void	minishell(t_mshell *m_shell)
 	wstatus = 0;
 	while (1)
 	{
-		new_command = readline("$");
+		if (wstatus)
+			new_command = readline("\x1B[1;31m$\x1B[0m");
+		else
+			new_command = readline("\x1B[1;32m$\x1B[0m");
 		m_shell->line++;
 		g_exec_pid = 0;
 		if (!new_command)

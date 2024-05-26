@@ -15,6 +15,7 @@
 
 #include "../Libft/libft.h"
 #include <dirent.h>
+#include <termios.h>
 #include <errno.h>
 #include <readline/history.h>
 #include <readline/readline.h>
