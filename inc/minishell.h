@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 22:17:14 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/27 00:59:08 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int			built_in(t_command *command, char **m_envp, int *wstatus);
 
 /*ENVP exec*/
 void		ft_env(char **m_envp);
-void		ft_unset(t_command *command, char **m_envp);
+void		ft_unset(t_command *command, char **m_envp, int *wstatus);
 void		ft_export(t_command *command, char **m_envp, int *wstatus);
 int			shlvlup(char **m_envp);
 

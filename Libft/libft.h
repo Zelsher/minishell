@@ -51,6 +51,7 @@ int				ft_isalnum(int c);
 int				ft_iswspace(char c);
 int				ft_isminorplus(char c);
 int				is_in(char c, char *str);
+int				ft_is_str_num(char *str);
 int				ft_power(int number, int power);
 int				ft_nbrlen(long long int num);
 long long int	ft_nbr_reducer(long long int nbr, int digit);

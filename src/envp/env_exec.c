@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:58:11 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 22:15:55 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/27 00:59:21 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_env(char **m_envp)
 	}
 }
 
-void	ft_unset(t_command *command, char **m_envp)
+void	ft_unset(t_command *command, char **m_envp, int *wstatus)
 {
 	int		i;
 
@@ -36,32 +36,18 @@ void	ft_unset(t_command *command, char **m_envp)
 		unset_envp(m_envp, command->arg[i]);
 		i++;
 	}
+	(*wstatus) = 0;
 }
 
 void	ft_export(t_command *command, char **m_envp, int *wstatus)
 {
-	int		verif;
 	int		i;
-	char	flag;
 
-	verif = 0;
 	i = 1;
-	flag = 0;
 	if (command->arg[1] == command->p_file)
 	{
 		while (command->arg[i] != NULL)
-		{
-			verif = export_envp(m_envp, command->arg[i]);
-			(*wstatus) = verif;
-			if (verif != 0 && flag == 0)
-			{
-				(*wstatus) = 1;
-				return ;
-			}
-			else
-				flag += 1;
-			i++;
-		}
+			export_envp(m_envp, command->arg[i]);
 	}
 	(*wstatus) = 0;
 }

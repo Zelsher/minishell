@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 22:28:05 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/27 00:59:48 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 	else if (ft_strcmp(command->cmd, "export") == 0)
 		return (ft_export(command, m_envp, wstatus), 0);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
-		return (ft_unset(command, m_envp), 0);
+		return (ft_unset(command, m_envp, wstatus), 0);
 	return (1);
 }
 
@@ -68,7 +68,6 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	ft_free(command, NULL, NULL, 0);
 	if (!update_wstatus(m_envp, wstatus, 1))
 		ft_free(command, NULL, m_envp, 1);
-	//printf("%s\n", m_envp[0]);
 }
 
 void	use_command(t_mshell *m_shell, char *new_command,
@@ -101,6 +100,7 @@ void	minishell(t_mshell *m_shell)
 	wstatus = 0;
 	while (1)
 	{
+		//printf("%s\n", m_shell->m_envp[0]);
 		if (wstatus)
 			m_shell->new_command = readline("\x1B[1;31m$\x1B[0m");
 		else
