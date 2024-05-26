@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/23 02:30:40 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:55:57 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	HANDLE_Var(char *new_command, char *arg, char **m_envp, t_parse *parse)
 {
 	char	*var;
 
-	//rintf("oui filler\n");
 	var = FIND_Var_Envp(m_envp, new_command + parse->i + 1, 0);
 	if (var)
 	{
@@ -87,7 +86,7 @@ void	UPDATE_Arg(t_command *command, t_parse *parse)
 	{
 		parse->j++;
 		command->arg[parse->j] = NULL;
-		//printf("strlen de : %ld\n%s\n_________________________\n", strlen(command->arg[parse.j - 1]) + 1, command->arg[parse.j - 1]);
+		//printf("strlen de : %ld\n%s\n_________________________\n", strlen(command->arg[parse->j - 1]) + 1, command->arg[parse->j - 1]);
 	}
 }
 

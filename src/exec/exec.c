@@ -6,11 +6,21 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 02:06:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:00:38 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	printerr(int fd, char *name, const char *error, int flag)
+{
+	if (flag == 1)
+		write(fd, "minishell: ", 11);
+	write(fd, name, ft_strlen(name));
+	write(fd, ": ", 2);
+	write(fd, error, ft_strlen(error));
+	write(fd, "\n", 1);
+}
 
 void	error_command(t_command *command, char **m_envp, int *wstatus)
 {
@@ -23,20 +33,27 @@ void	error_command(t_command *command, char **m_envp, int *wstatus)
 void	ft_executable(t_command *command, char **m_envp, int *wstatus)
 {
 	struct stat path_stat;
-	int is_directory;
 
 	//shlvlup(m_envp);
 	execve(command->cmd, command->arg, m_envp);
 	(*wstatus) = errno;
 	stat(command->cmd, &path_stat);
-	is_directory = S_ISDIR(path_stat.st_mode);
-	if (is_directory != 0)
+	//printf("%s\n", command->cmd);
+	if (access(command->cmd, F_OK))
+	{
+		(*wstatus) = 127;
+		printerr(2, command->cmd, "No such file or directory", 1);
+	}
+	else if (S_ISDIR(path_stat.st_mode))
 	{
 		(*wstatus) = 126;
-		printerr(2, command->cmd, "Is a directory\n", 1);
+		printerr(2, command->cmd, "Is a directory", 1);
 	}
 	else
-		perror("minishell");
+	{
+		(*wstatus) = 126;
+		printerr(2, command->cmd, "Permission denied", 1);
+	}
 	exit ((*wstatus));
 }
 

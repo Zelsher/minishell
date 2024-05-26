@@ -6,21 +6,11 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 11:05:57 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:29:28 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	printerr(int fd, char *name, const char *error, int flag)
-{
-	if (flag == 1)
-		write(fd, "minishell: ", 11);
-	write(fd, name, ft_strlen(name));
-	write(fd, ": ", 2);
-	write(fd, error, ft_strlen(error));
-	write(fd, "\n", 1);
-}
 
 int	UPDATE_Wstatus(char **m_envp, int *wstatus, int flag)
 {
@@ -64,7 +54,6 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 
 	verif = 0;
 	command = CMD_Parse(m_shell, new_command, m_envp, wstatus);
-	free(new_command);
 	print_cmd(command, 0);
 	if (command && g_exec_pid != -1)
 	{
@@ -87,7 +76,7 @@ void	USE_Command(t_mshell *m_shell, char *new_command, int *wstatus, char **m_en
 			verif = UPDATE_Wstatus(m_envp, wstatus, 1);
 		}
 		else
-			UPDATE_Wstatus(m_envp, wstatus, 0);
+			verif = UPDATE_Wstatus(m_envp, wstatus, 0);
 		if (!verif)
 			ft_free(command, NULL, m_envp, 1);
 	}

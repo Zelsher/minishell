@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/20 18:19:15 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:56:03 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ void	HANDLE_Var_Malloc(char *new_command, char **m_envp, t_parse *parse)
 {
 	char	*var;
 
-	//printf("Oui malloc\n");
 	var = FIND_Var_Envp(m_envp, new_command + parse->i + 1, 0);
-	//printf("var : %s\n", var);
 	if (var)
 		parse->j += ft_strlen(var);
 	if (new_command[parse->i + 1] == '?')
@@ -61,7 +59,7 @@ char	*ARG_Malloc(t_command *command, char *new_command, char **m_envp)
 		if (is_quote(new_command[parse.i]))
 			HANDLE_Quote_Malloc(new_command, m_envp, &parse);
 		else if (new_command[parse.i] == '$' && (ft_isalnum(new_command[parse.i + 1]) || new_command[parse.i + 1] == '?'))
-			HANDLE_Var_Malloc(new_command + parse.i, m_envp, &parse);
+			HANDLE_Var_Malloc(new_command, m_envp, &parse);
 		else
 		{
 			parse.i++;
