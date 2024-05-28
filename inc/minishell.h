@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 03:21:28 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:08:51 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_command	*cmd_filler(t_mshell *m_shell, char *new_command,
 				t_command *command, char token);
 t_command	*cmd_parse(t_mshell *m_shell, char *new_command,
 				char **m_envp, int *wstatus);
+int			tokener(char *new_command, t_command *command, int *j, char *tokens);
 
 /*ENVP*/
 void		envp_print(char	**m_envp);

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 02:48:52 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:21:39 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int	cmd_verifier(t_command *command, int *wstatus)
 	if (command->invalid)
 	{
 		(*wstatus) = 2;
-		verif = 0;
+		return (0);
 	}
-	else if (!command->token && !command->cmd)
+	else if ((!command->token && !command->cmd) || command->token == 'u')
 		return (0);
 	if (command->left)
 		verif = cmd_verifier(command->left, wstatus);
