@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:09:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 21:31:44 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:34:37 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	*generate_file(size_t *count)
 		{
 			free(file_name);
 			file_name = NULL;
-			printf("acces\n");
 		}
 		*count += 1;
 	}

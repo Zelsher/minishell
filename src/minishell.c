@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/27 00:59:48 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:27:45 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	waitpid(g_exec_pid, wstatus, 0);
 	if (g_exec_pid < 0)
 	{
-		(*wstatus) = 128 + g_exec_pid * (-1);
+		(*wstatus) = 130;
 		ft_free(command, NULL, NULL, 0);
+		printf("\n");
 		g_exec_pid = 0;
 		if (!update_wstatus(m_envp, wstatus, 0))
 			ft_free(command, NULL, m_envp, 1);
@@ -76,10 +77,10 @@ void	use_command(t_mshell *m_shell, char *new_command,
 	t_command	*command;
 	int			verif;
 
-	verif = 0;
+	verif = 1;
 	command = cmd_parse(m_shell, new_command, m_envp, wstatus);
 	print_cmd(command, 0);
-	if (command && g_exec_pid != -1)
+	if (command && g_exec_pid >= 0)
 	{
 		if (ft_builtins(command, wstatus, m_envp) != 0)
 		{
@@ -88,9 +89,14 @@ void	use_command(t_mshell *m_shell, char *new_command,
 		}
 		else
 			verif = update_wstatus(m_envp, wstatus, 0);
-		if (!verif)
-			ft_free(command, NULL, m_envp, 1);
 	}
+	else if (g_exec_pid < 0)
+	{
+		(*wstatus) = 130;
+		verif = update_wstatus(m_envp, wstatus, 0);
+	}
+	if (!verif)
+		ft_free(command, NULL, m_envp, 1);
 }
 
 void	minishell(t_mshell *m_shell)

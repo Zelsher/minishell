@@ -6,11 +6,25 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 21:09:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:21:04 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	nothing_left(char *new_command)
+{
+	int	i;
+
+	i = 2;
+	while (new_command[i])
+	{
+		if (!is_in(new_command[i], "\t\v\n\r "))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 t_command	*cmd_construct(t_mshell *m_shell, char first_cmd)
 {

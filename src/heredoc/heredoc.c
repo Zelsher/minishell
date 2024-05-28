@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 22:10:09 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:33:07 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	heredocker(t_mshell *m_shell, char *file_name, char *delimiter, int line)
 	while (1)
 	{
 		reader = readline(">");
-		if (!reader || !ft_strcmp(delimiter, reader))
+		if (!reader || !ft_strcmp(delimiter, reader) || g_exec_pid == -1)
 		{
 			if (!reader)
 				print_eof_heredoc(m_shell->line, delimiter);
@@ -67,11 +67,9 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 	t_parse *parse, char *new_command)
 {
 	static size_t	count;
-	char			*delimiter;
 	int				verif;
 	char			*file_name;
 
-	delimiter = find_delimiter(new_command, parse);
 	file_name = generate_file(&count);
 	if (!file_name)
 		return (return_parse_error(command), 0);
@@ -80,15 +78,17 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 		return (return_parse_error(command), 0);
 	if (g_exec_pid == 0)
 	{
-		g_exec_pid = -2;
+		
 		free_command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
-			heredocker(m_shell, file_name, delimiter, 0));
+			heredocker(m_shell, file_name,
+			find_delimiter(new_command, parse), 0));
 	}
 	waitpid(g_exec_pid, &verif, 0);
-	if (verif == -1)
+	if (verif != -1)
+		command->heredoc = file_name;
+	if (g_exec_pid == -1)
 		return (return_parse_error(command), 0);
-	command->heredoc = file_name;
-	command->arg[0] = strdup(command->heredoc);
+	command->arg[0] = ft_strdup(command->heredoc);
 	return (1);
 }

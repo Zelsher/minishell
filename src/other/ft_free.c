@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 21:34:31 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 02:48:52 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,11 @@ int	cmd_verifier(t_command *command, int *wstatus)
 
 	verif = 1;
 	if (command->invalid)
-		(*wstatus) = command->invalid;
-	if (command->token == 'u')
-		return (ft_printf_error(
-				"minishell: syntax error near unexpected token `%d'\n", 
-		command->invalid_token), 0);
-	else if ( (!command->token && !command->cmd))
+	{
+		(*wstatus) = 2;
+		verif = 0;
+	}
+	else if (!command->token && !command->cmd)
 		return (0);
 	if (command->left)
 		verif = cmd_verifier(command->left, wstatus);

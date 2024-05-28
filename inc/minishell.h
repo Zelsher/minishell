@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/27 00:59:08 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:21:28 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		ft_print_command_tree(t_command *command, char *branch, int i);
 void		print_cmd(t_command *command, int a);
 
 /*Parsing*/
+int			nothing_left(char *new_command);
 t_command	*put_p_arg(t_command *command);
 int			cmd_verifier(t_command *command, int *wstatus);
 char		*arg_malloc(t_command *command, char *new_command, char **m_envp);
@@ -142,6 +143,7 @@ void		redir_heredoc(t_command *command, char **m_envp, int *wstatus);
 /*Signal*/
 void		singal_handler(int signal);
 int			init_receive_signal(struct sigaction *sa);
+int			init_child_signal(struct sigaction *sa);
 
 /*Free*/
 void		free_command(t_command *command);
