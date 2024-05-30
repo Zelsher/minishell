@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:58:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 17:16:52 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/05/30 02:40:09 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	token_error(t_command *command, char *new_command)
 {
-	if (is_in(new_command[1], "<>|&") || new_command[0] == '&')
+	if (is_in(new_command[1], "<>|&") && new_command[0] == '&')
 		ft_printf_error(
 				"minishell: syntax error near unexpected token `%c'\n",
 				new_command[1]);
@@ -30,7 +30,7 @@ void	token_identifier(char *new_command, t_command *command, int *j, int i)
 		command->token = 'r';
 	else if (new_command[0] == '<' && new_command[1] == '<')
 		command->token = 'h';
-	else if (!is_in(new_command[1], "<>|&") || new_command[0] != '&')
+	else if (!is_in(new_command[1], "<>|&") && new_command[0] != '&')
 		command->token = new_command[0];
 	else 
 		token_error(command, new_command);
