@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 22:16:44 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/06 21:47:12 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	envp_cpy(char **m_envp, char **envp)
 	{
 		m_envp[0] = malloc(sizeof(char) * 6);
 		if (!m_envp[0])
-			exit(0);
+			exit(1);
 		ft_strcpy(m_envp[0], "?=0");
 		j++;
 	}
@@ -135,7 +135,7 @@ char	*find_var_envp(char **m_envp, char *var, int verif)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	j = 0;
 	while (m_envp[i] && !same_var(m_envp[i], var))
 		i++;
