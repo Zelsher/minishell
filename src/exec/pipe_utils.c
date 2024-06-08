@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:22:50 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:52:40 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ void	wait_pid(int *pid, int *wstatus)
 	i = 0;
 	while (pid[i] != -1)
 	{
-		printf("Waiting for %d\n", pid[i]);
 		waitpid(pid[i], wstatus, 0);
 		i++;
 	}
-	printf("Stop wait\n");
 }
 
 int	*create_new_pid_list(t_piper *piper)
