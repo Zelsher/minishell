@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 17:21:39 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:41:39 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ void	free_command(t_command *command)
 	return ;
 }
 
-void	ft_free(t_command *command, char *new_command,char **m_envp, int m_exit)
+void	ft_free(t_command *command, char *new_command,
+	char **m_envp, int m_exit)
 {
 	free_command(command);
 	ft_free_envp(m_envp);
 	if (new_command)
 	{
-		free(new_command); 
+		free(new_command);
 		new_command = NULL;
 	}
 	if (m_exit)

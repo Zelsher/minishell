@@ -35,7 +35,7 @@ SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)$(SRC_EXEC)exit.c \
 					$(SRC_DIR)$(SRC_EXEC)pathfinder.c \
 					$(SRC_DIR)$(SRC_EXEC)redir.c \
-
+					$(SRC_DIR)$(SRC_EXEC)pipe_utils.c \
 
 OBJ 			= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 

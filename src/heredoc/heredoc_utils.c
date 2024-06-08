@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 21:11:34 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:40:30 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,5 @@ int	create_heredoc_line(char *reader, char *here_doc_line, char **m_envp)
 	}
 	here_doc_line[parse.j] = '\n';
 	here_doc_line[parse.j + 1] = '\0';
-	//printf("str_len de %s : %ld\n", here_doc_line, ft_strlen(here_doc_line) + 1);
 	return (parse.i);
 }

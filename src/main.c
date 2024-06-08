@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/06 22:12:05 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:43:00 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,41 @@
 
 int	g_exec_pid;
 
+void	envp_cpy(char **m_envp, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (envp[0][0] != '?')
+	{
+		m_envp[0] = malloc(sizeof(char) * 6);
+		if (!m_envp[0])
+			exit(1);
+		ft_strcpy(m_envp[0], "?=0");
+		j++;
+	}
+	while (envp[i] && j < 1000)
+	{
+		m_envp[j] = ft_strdup(envp[i]);
+		if (!m_envp[i])
+			ft_free(NULL, NULL, m_envp, 1);
+		j++;
+		i++;
+	}
+	m_envp[j] = NULL;
+	if (!shlvlup(m_envp))
+		ft_free(NULL, NULL, m_envp, 1);
+}
+
 void	fill_void_envp(char **m_envp)
 {
 	m_envp[0] = malloc(sizeof(char) * 6);
 	if (!m_envp[0])
 		exit(1);
 	ft_strcpy(m_envp[0], "?=0");
-	m_envp[1] = NULL; 
+	m_envp[1] = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -30,7 +58,8 @@ int	main(int argc, char **argv, char **envp)
 	struct sigaction	sa;
 
 	if (argc != 1)
-		return (printf("minishell: %s: no such file or directory\n", argv[1]), 127);
+		return (printf("minishell: %s: no such file or directory\n", argv[1]),
+			127);
 	if (!envp[0])
 		fill_void_envp(m_envp);
 	else

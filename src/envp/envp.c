@@ -6,39 +6,11 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/06 21:47:12 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:42:55 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	envp_cpy(char **m_envp, char **envp)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (envp[0][0] != '?')
-	{
-		m_envp[0] = malloc(sizeof(char) * 6);
-		if (!m_envp[0])
-			exit(1);
-		ft_strcpy(m_envp[0], "?=0");
-		j++;
-	}
-	while (envp[i] && j < 1000)
-	{
-		m_envp[j] = ft_strdup(envp[i]);
-		if (!m_envp[i])
-			ft_free(NULL, NULL, m_envp, 1);
-		j++;
-		i++;
-	}
-	m_envp[j] = NULL;
-	if (!shlvlup(m_envp))
-		ft_free(NULL, NULL, m_envp, 1);
-}
 
 int	same_var(char *m_envp_var, char *var)
 {
@@ -135,7 +107,7 @@ char	*find_var_envp(char **m_envp, char *var, int verif)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	while (m_envp[i] && !same_var(m_envp[i], var))
 		i++;

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 03:33:07 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:40:49 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,10 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 		return (return_parse_error(command), 0);
 	if (g_exec_pid == 0)
 	{
-		
 		free_command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
 			heredocker(m_shell, file_name,
-			find_delimiter(new_command, parse), 0));
+				find_delimiter(new_command, parse), 0));
 	}
 	waitpid(g_exec_pid, &verif, 0);
 	if (verif != -1)

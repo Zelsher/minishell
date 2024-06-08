@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 21:10:25 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:39:55 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,5 @@ char	*arg_malloc(t_command *command, char *new_command, char **m_envp)
 	arg = malloc(sizeof(char) * (parse.j + 1));
 	if (!arg)
 		command->invalid = 999;
-	//printf("malloc de %ld\n", parse.j + 1);
 	return (arg);
 }

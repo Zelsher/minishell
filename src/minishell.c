@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 03:27:45 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:36:38 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	if (g_exec_pid == -1)
 		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid == 0)
-		ft_exec(command, m_envp, wstatus);
+		piper(command, m_envp, wstatus);
 	waitpid(g_exec_pid, wstatus, 0);
+	if (*wstatus < 0)
+		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid < 0)
 	{
 		(*wstatus) = 130;
@@ -106,7 +108,6 @@ void	minishell(t_mshell *m_shell)
 	wstatus = 0;
 	while (1)
 	{
-		//printf("%s\n", m_shell->m_envp[0]);
 		if (wstatus)
 			m_shell->new_command = readline("\x1B[1;31m$\x1B[0m");
 		else

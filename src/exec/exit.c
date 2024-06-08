@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:02:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/27 00:53:07 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:43:22 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	ft_exit(t_command *command, char **m_envp, int *wstatus)
 	}
 	else
 	{
-		ft_printf_error("minishell: exit: %s: numeric argument required\n", command->arg[1]);
+		ft_printf_error("minishell: exit: %s: numeric argument required\n",
+			command->arg[1]);
 		ft_free(command, NULL, m_envp, 2);
 	}
 	(void)wstatus;

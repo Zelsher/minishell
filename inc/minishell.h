@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 17:08:51 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:35:03 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ typedef struct s_parse
 	int		quote;
 }					t_parse;
 
+typedef struct s_piper
+{
+	int				pipe[2];
+	int				new_pipe[2];
+	int				*pid;
+	int				i;
+}					t_piper;
+
 extern int	g_exec_pid;
 
 /*Parsing_utils*/
@@ -84,7 +92,8 @@ t_command	*cmd_filler(t_mshell *m_shell, char *new_command,
 				t_command *command, char token);
 t_command	*cmd_parse(t_mshell *m_shell, char *new_command,
 				char **m_envp, int *wstatus);
-int			tokener(char *new_command, t_command *command, int *j, char *tokens);
+int			tokener(char *new_command, t_command *command, int *j,
+				char *tokens);
 
 /*ENVP*/
 void		envp_print(char	**m_envp);
@@ -109,7 +118,9 @@ void		print_history(void);
 
 /*exec*/
 void		ft_exec(t_command *command, char **envp, int *wstatus);
-int			pipecmd(t_command *command, char **m_envp, int *wstatus);
+void		wait_pid(int *pid, int *wstatus);
+int			*create_new_pid_list(t_piper *piper);
+int			piper(t_command *command, char **m_envp, int *wstatus);
 
 /*Builtins*/
 void		ft_env(char **m_envp);

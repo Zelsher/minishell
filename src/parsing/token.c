@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:58:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/30 02:40:09 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:39:40 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	token_error(t_command *command, char *new_command)
 {
 	if (is_in(new_command[1], "<>|&") && new_command[0] == '&')
 		ft_printf_error(
-				"minishell: syntax error near unexpected token `%c'\n",
-				new_command[1]);
+			"minishell: syntax error near unexpected token `%c'\n",
+			new_command[1]);
 	else
 		ft_printf_error(
-				"minishell: syntax error near unexpected token `new_line'\n");
+			"minishell: syntax error near unexpected token `new_line'\n");
 	command->token = 'u';
 }
 
@@ -32,7 +32,7 @@ void	token_identifier(char *new_command, t_command *command, int *j, int i)
 		command->token = 'h';
 	else if (!is_in(new_command[1], "<>|&") && new_command[0] != '&')
 		command->token = new_command[0];
-	else 
+	else
 		token_error(command, new_command);
 	new_command[0] = '\0';
 	i++;
