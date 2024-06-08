@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 19:31:50 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 21:56:27 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_command	*recurs_parse(t_mshell *m_shell, char *new_command,
 	{
 		cmd->left = recurs_parse(m_shell, new_command, 0, '0');
 		cmd->right = recurs_parse(m_shell, new_command + i, 0, cmd->token);
-		if (!cmd->left || !cmd->right || !redirect_init(cmd))
+		if (!cmd->left || !cmd->right)
 			return (free_command(cmd), NULL);
 	}
 	if (!cmd->token)
