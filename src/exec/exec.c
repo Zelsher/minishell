@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:43:59 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:37:58 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 	int		flag;
 	char	*path;
 
+	if (!ft_strcmp(command->arg[0], "show")
+		|| !ft_strcmp(command->arg[0], "unshow"))
+		exit(0);
 	flag = 0;
 	path = pathfinder(command, m_envp, &flag);
 	if (path)

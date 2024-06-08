@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 02:04:39 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:09:39 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	signal_handler(int signal)
 
 void	child_signal_handler(int signal)
 {
-	if (signal == SIGINT && g_exec_pid == 0)
-		exit(130);
+	(void)signal;
 }
 
 int	init_receive_signal(struct sigaction *sa)

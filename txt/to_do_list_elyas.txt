@@ -1,14 +1,75 @@
-"test1" 'test2' "test'3" 'test"4' "test"
-test -r --a "essaie" file | 'ten"tative' -l file2
-command1 -r --a "essaie" file1 | command2 'ten"tative' -l file2 && command3 'test' --aled file3
-command1 -r --a file1 | command 2 -l file2 ; command3 -o file3
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
+/*   Updated: 2024/06/08 17:43:00 by eboumaza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-echo '$?' "$?" "la $PATH ' $" 
+#include "../inc/minishell.h"
 
-verifier si il est possible de securiser le heredoc, en verifier si le fd est tjr ouvert avant dy ecrire
-tester avec plusieurs < < > < pour voir comment le redir fonctionnent
-revoir REDIRECT_Init
+int	g_exec_pid;
 
-Lancer un fork, ensuite si il ny a pas de pipe, il va dans ft_exec, si il y a un pipe, il piped_fd, fork deux fois,
-un pour la commande de droite et lautre celle de gauche, et les envoie dans lexec. Si le token de droite est '|',
-il fork, mais ici qu'une fois, pour envoyer la commandande de gauche
+void	envp_cpy(char **m_envp, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (envp[0][0] != '?')
+	{
+		m_envp[0] = malloc(sizeof(char) * 6);
+		if (!m_envp[0])
+			exit(1);
+		ft_strcpy(m_envp[0], "?=0");
+		j++;
+	}
+	while (envp[i] && j < 1000)
+	{
+		m_envp[j] = ft_strdup(envp[i]);
+		if (!m_envp[i])
+			ft_free(NULL, NULL, m_envp, 1);
+		j++;
+		i++;
+	}
+	m_envp[j] = NULL;
+	if (!shlvlup(m_envp))
+		ft_free(NULL, NULL, m_envp, 1);
+}
+
+void	fill_void_envp(char **m_envp)
+{
+	m_envp[0] = malloc(sizeof(char) * 6);
+	if (!m_envp[0])
+		exit(1);
+	ft_strcpy(m_envp[0], "?=0");
+	m_envp[1] = NULL;
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_mshell			m_shell;
+	char				*m_envp[1000];
+	struct sigaction	sa;
+
+	if (argc != 1)
+		return (printf("minishell: %s: no such file or directory\n", argv[1]),
+			127);
+	if (!envp[0])
+		fill_void_envp(m_envp);
+	else
+		envp_cpy(m_envp, envp);
+	if (!init_receive_signal(&sa))
+		return (ft_free(NULL, NULL, m_envp, 1), 1);
+	m_shell.m_envp = m_envp;
+	m_shell.command = NULL;
+	m_shell.command = NULL;
+	m_shell.line = 0;
+	minishell(&m_shell);
+	return (0);
+}

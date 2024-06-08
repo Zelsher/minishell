@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:36:38 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:00:08 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	if (g_exec_pid == -1)
 		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid == 0)
-		piper(command, m_envp, wstatus);
+		piper(command, m_envp, wstatus, command);
 	waitpid(g_exec_pid, wstatus, 0);
 	if (*wstatus < 0)
 		ft_free(command, NULL, m_envp, 1);

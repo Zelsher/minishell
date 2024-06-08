@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:35:03 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:00:32 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ void		print_history(void);
 void		ft_exec(t_command *command, char **envp, int *wstatus);
 void		wait_pid(int *pid, int *wstatus);
 int			*create_new_pid_list(t_piper *piper);
-int			piper(t_command *command, char **m_envp, int *wstatus);
+void		end_pipe(t_command *command, char **m_envp,
+				t_piper *piper, int *wstatus);
+int			piper(t_command *command, char **m_envp, int *wstatus, t_command *p_command);
 
 /*Builtins*/
 void		ft_env(char **m_envp);

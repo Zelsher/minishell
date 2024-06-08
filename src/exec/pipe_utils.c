@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:52:40 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:18:04 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,19 @@ int	*create_new_pid_list(t_piper *piper)
 	new_pid[i + 1] = -1;
 	free(piper->pid);
 	return (new_pid);
+}
+
+void	end_pipe(t_command *command, char **m_envp,
+	t_piper *piper, int *wstatus)
+{
+	close(piper->pipe[0]);
+	close(piper->pipe[1]);
+	if (piper->new_pipe[0] != -1)
+		close(piper->new_pipe[0]);
+	if (piper->new_pipe[1] != -1)
+		close(piper->new_pipe[1]);
+	wait_pid(piper->pid, wstatus);
+	free(piper->pid);
+	ft_free(command, NULL, m_envp, 0);
+	exit(*wstatus);
 }
