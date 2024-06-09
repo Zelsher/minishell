@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 19:37:58 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:55:20 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 	int		flag;
 	char	*path;
 
+	printf("OUI\n");
 	if (!ft_strcmp(command->arg[0], "show")
 		|| !ft_strcmp(command->arg[0], "unshow"))
 		exit(0);
@@ -96,9 +97,6 @@ void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 	else if (command->token == 0)
 		ft_do_command(command, m_envp, wstatus);
 	else
-	{
-		printf("\n\nbizzare la\n\n");
 		error_command(command, m_envp, wstatus);
-	}
 	exit ((*wstatus));
 }

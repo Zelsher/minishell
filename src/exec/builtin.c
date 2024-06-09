@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/26 20:42:35 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:50:01 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	ft_cd2(t_command *command, char **m_envp, int *wstatus)
 {
 	char	*home;
 
+	printf("test\n");
 	home = find_var_envp(m_envp, "HOME", 0);
 	if (home)
 	{

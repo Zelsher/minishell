@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 20:00:08 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:54:13 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ void	use_command(t_mshell *m_shell, char *new_command,
 		(*wstatus) = 130;
 		verif = update_wstatus(m_envp, wstatus, 0);
 	}
+	ft_free(command, NULL, NULL, 0);
 	if (!verif)
-		ft_free(command, NULL, m_envp, 1);
+		exit(1);
 }
 
 void	minishell(t_mshell *m_shell)

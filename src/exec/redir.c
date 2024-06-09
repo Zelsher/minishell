@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:59:54 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 22:03:57 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:41:38 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*last_arg(t_command *command)
 
 	i = 0;
 	if (command->token)
-	command = command->left;
+		command = command->left;
 	while (command->arg[i + 1])
 		i++;
 	return (command->arg[i]);
