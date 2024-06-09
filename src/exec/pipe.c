@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:54:03 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 20:01:51 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:11:15 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	launch_pipe(t_command *command, t_piper *piper,
 	dup2(piper->pipe[1], STDOUT_FILENO);
 	dup2(piper->pipe[1], STDERR_FILENO);
 	ft_exec(p_command_pipe, m_envp, wstatus);
+	close(piper->pipe[1]);
 	exit(*wstatus);
 }
 
@@ -39,12 +40,15 @@ void	receive_pipe(t_command *command, t_piper *piper,
 	p_command_pipe = command->left;
 	ft_free(command->right, NULL, NULL, 0);
 	free_single_command(command);
-	close(piper->pipe[1]);
+	close(piper->pipe[1]);//????
 	close(piper->new_pipe[0]);
 	dup2(piper->pipe[0], STDIN_FILENO);
+	close(piper->pipe[0]);
 	dup2(piper->new_pipe[1], STDOUT_FILENO);
 	dup2(piper->new_pipe[1], STDERR_FILENO);
+	close(piper->new_pipe[1]);
 	ft_exec(p_command_pipe, m_envp, wstatus);
+	close(piper->pipe[0]);
 	exit(*wstatus);
 }
 
@@ -55,7 +59,9 @@ void	close_pipe(t_command *command, t_piper *piper,
 	free(piper->pid);
 	close(piper->pipe[1]);
 	close(piper->new_pipe[1]);
+	close(piper->new_pipe[0]);
 	dup2(piper->pipe[0], STDIN_FILENO);
+	close(piper->pipe[0]);
 	ft_exec(command, m_envp, wstatus);
 	exit(*wstatus);
 }
@@ -77,6 +83,8 @@ int	pipe_manager(t_command *command, t_piper *piper,
 	piper->i++;
 	if (piper->i != 1)
 	{
+		close(piper->pipe[0]);
+		close(piper->pipe[1]);
 		piper->pipe[0] = piper->new_pipe[0];
 		piper->pipe[1] = piper->new_pipe[1];
 	}

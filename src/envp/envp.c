@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:42:55 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/09 21:54:31 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int	export_envp(char **m_envp, char *cmd)
 	var = ft_strdup(cmd);
 	if (!var)
 		return (1);
-	if (!verify_var(cmd) || verify_var(cmd) == -1)
+	if (verify_var(cmd) <= 0)
 		return (free(var), 1);
-	while (m_envp[i])
+	while (m_envp[i] && cmd[0] != '?')
 	{
 		if (same_var(m_envp[i], var))
 		{

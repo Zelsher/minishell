@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:58:11 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/27 00:59:21 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/09 22:01:47 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	ft_export(t_command *command, char **m_envp, int *wstatus)
 	if (command->arg[1] == command->p_file)
 	{
 		while (command->arg[i] != NULL)
+		{
 			export_envp(m_envp, command->arg[i]);
+			i++;
+		}
 	}
 	(*wstatus) = 0;
 }
