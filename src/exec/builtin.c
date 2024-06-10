@@ -6,11 +6,36 @@
 /*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 15:52:07 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:14:11 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int    change_pwd(char **m_envp)
+{
+    char    *tmp;
+    char    *pwd;
+
+    unset_envp(m_envp, "OLDPWD");
+    tmp = find_var_envp(m_envp, "PWD", 0);
+    if (!tmp)
+        return (0);
+    pwd = ft_strjoin("OLDPWD=", tmp);
+    if (!pwd)
+        return (0);
+    export_envp(m_envp, pwd);
+    free(pwd);
+    unset_envp(m_envp, "PWD");
+    tmp = getcwd(NULL, 0);
+    pwd = ft_strjoin("PWD=", tmp);
+    if (!pwd)
+        return (free(tmp), 0);
+    free(tmp);
+    export_envp(m_envp, pwd);
+    free(pwd);
+    return (0);
+}
 
 void	ft_echo(t_command *command)
 {
@@ -96,7 +121,7 @@ int	built_in(t_command *command, char **m_envp, int *wstatus)
 	if (!command->cmd)
 		return (0);
 	if (ft_strcmp(command->cmd, "cd") == 0)
-		return (ft_cd(command, m_envp, wstatus), 1);
+		return (ft_cd(command, m_envp, wstatus), change_pwd(m_envp), 1);
 	else if (ft_strcmp(command->cmd, "echo") == 0)
 		return (ft_echo(command), 1);
 	else if (ft_strcmp(command->cmd, "history") == 0)
