@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 16:12:15 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:17:39 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 {
 	int	pid;
-	
+
 	pid = fork();
 	g_exec_pid = pid;
 	if (pid == -1)

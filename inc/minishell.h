@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 16:11:22 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:17:14 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int			piper(t_command *command, char **m_envp,
 				int *wstatus, t_command *p_command);
 
 /*Builtins*/
-int    		change_pwd(char **m_envp);
+int			change_pwd(char **m_envp);
 void		ft_env(char **m_envp);
 void		ft_echo(t_command *command);
 void		ft_cd2(t_command *command, char **m_envp, int *wstatus);
