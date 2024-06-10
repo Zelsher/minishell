@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 01:54:13 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:49:47 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	update_wstatus(char **m_envp, int *wstatus, int flag)
 	char	*char_wstatus;
 
 	i = 0;
+	char_wstatus = NULL;
 	if (flag == 1)
 		char_wstatus = ft_itoa(WEXITSTATUS(*wstatus));
 	else if (flag == 0)
@@ -49,19 +50,21 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 
 void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 {
-	g_exec_pid = fork();
-	if (g_exec_pid == -1)
+	int	pid;
+	
+	pid = fork();
+	g_exec_pid = pid;
+	if (pid == -1)
 		ft_free(command, NULL, m_envp, 1);
-	if (g_exec_pid == 0)
+	if (pid == 0)
 		piper(command, m_envp, wstatus, command);
-	waitpid(g_exec_pid, wstatus, 0);
+	waitpid(pid, wstatus, 0);
 	if (*wstatus < 0)
 		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid < 0)
 	{
 		(*wstatus) = 130;
 		ft_free(command, NULL, NULL, 0);
-		printf("\n");
 		g_exec_pid = 0;
 		if (!update_wstatus(m_envp, wstatus, 0))
 			ft_free(command, NULL, m_envp, 1);
@@ -82,7 +85,7 @@ void	use_command(t_mshell *m_shell, char *new_command,
 	verif = 1;
 	command = cmd_parse(m_shell, new_command, m_envp, wstatus);
 	print_cmd(command, 0);
-	if (command && g_exec_pid >= 0)
+	if (command && g_exec_pid == 0)
 	{
 		if (ft_builtins(command, wstatus, m_envp) != 0)
 		{
@@ -102,31 +105,31 @@ void	use_command(t_mshell *m_shell, char *new_command,
 		exit(1);
 }
 
-void	minishell(t_mshell *m_shell)
+int	minishell(t_mshell *m_shell, int *wstatus)
 {
-	int					wstatus;
-
-	wstatus = 0;
 	while (1)
 	{
-		if (wstatus)
+		if (*wstatus)
 			m_shell->new_command = readline("\x1B[1;31m$\x1B[0m");
 		else
 			m_shell->new_command = readline("\x1B[1;32m$\x1B[0m");
 		if (g_exec_pid)
 		{
-			wstatus = 130;
-			if (!update_wstatus(m_shell->m_envp, &wstatus, 0))
+			*wstatus = 130;
+			if (!update_wstatus(m_shell->m_envp, wstatus, 0))
 				ft_free(NULL, m_shell->new_command, m_shell->m_envp, 1);
+			g_exec_pid = 0;
 		}
 		m_shell->line++;
 		g_exec_pid = 0;
 		if (!m_shell->new_command)
-			ft_free(NULL, NULL, m_shell->m_envp, 1);
+			return (printf ("exit\n"),
+				ft_free(NULL, NULL, m_shell->m_envp, 0), exit(0), 1);
 		if (m_shell->new_command[0] != 0 && !is_last_cmd(m_shell->new_command))
 			add_history(m_shell->new_command);
 		if (m_shell->new_command)
 			use_command(m_shell, m_shell->new_command,
-				&wstatus, m_shell->m_envp);
+				wstatus, m_shell->m_envp);
 	}
+	return (1);
 }

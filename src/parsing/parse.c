@@ -3,33 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 21:56:27 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:29:48 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	redirect_init(t_command *command)
+int	cmd_verifier(t_command *command, int *wstatus)
 {
-	t_command	*temp;
-	int			i;
+	int	verif;
 
-	i = 0;
-	temp = command->right;
-	while (command->left->arg[i])
-		i++;
-	if (i > 199)
+	verif = 1;
+	if (command->invalid)
+	{
+		(*wstatus) = 2;
 		return (0);
-	while (temp->token)
-		temp = temp->right;
-	command->left->arg[i] = strdup(temp->arg[0]);
-	if (!command->left->arg[i])
+	}
+	else if ((!command->token && !command->cmd) || command->token == 'u')
 		return (0);
-	command->left->arg[i + 1] = NULL;
-	return (1);
+	if (command->left)
+		verif = cmd_verifier(command->left, wstatus);
+	if (verif == 0)
+		return (verif);
+	if (command->right)
+		verif = cmd_verifier(command->right, wstatus);
+	if (verif == 0)
+		return (verif);
+	return (verif);
 }
 
 t_command	*recurs_parse(t_mshell *m_shell, char *new_command,
@@ -71,7 +74,6 @@ t_command	*cmd_parse(t_mshell *m_shell, char *new_command,
 		ft_free(command, NULL, m_envp, 1);
 	if (!cmd_verifier(command, wstatus))
 	{
-		(*wstatus) = 2;
 		if (!update_wstatus(m_envp, wstatus, 0))
 			return (ft_free(command, NULL, m_envp, 1), NULL);
 		return (free_command(command), NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:40:49 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 13:59:17 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,11 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 				find_delimiter(new_command, parse), 0));
 	}
 	waitpid(g_exec_pid, &verif, 0);
+	printf("%d\n", g_exec_pid);
 	if (verif != -1)
 		command->heredoc = file_name;
-	if (g_exec_pid == -1)
-		return (return_parse_error(command), 0);
+	if (g_exec_pid <= -1)
+		return (printf("\n"), return_parse_error(command), 0);
 	command->arg[0] = ft_strdup(command->heredoc);
 	return (1);
 }

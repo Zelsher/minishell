@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 01:55:20 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:17:46 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_executable(t_command *command, char **m_envp, int *wstatus)
 		(*wstatus) = 126;
 		printerr(2, command->cmd, "Permission denied", 1);
 	}
+	ft_free(command, NULL, m_envp, 0);
 	exit ((*wstatus));
 }
 
@@ -60,7 +61,6 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 	int		flag;
 	char	*path;
 
-	printf("OUI\n");
 	if (!ft_strcmp(command->arg[0], "show")
 		|| !ft_strcmp(command->arg[0], "unshow"))
 		exit(0);
@@ -80,11 +80,7 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 
 void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 {
-	struct sigaction	sa;
-
-	if (!init_child_signal(&sa))
-		ft_free(command, NULL, m_envp, 1);
-	else if (command->token == '<' || command->token == 'h')
+	if (command->token == '<' || command->token == 'h')
 		redir_input(command, m_envp, wstatus);
 	else if (command->token == '>')
 		redir_output(command, m_envp, wstatus);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 01:41:58 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:47:30 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,9 @@ void	end_pipe(t_command *command, char **m_envp,
 	wait_pid(piper->pid, wstatus);
 	free(piper->pid);
 	ft_free(command, NULL, m_envp, 0);
+	if (WIFEXITED(*wstatus))
+		*wstatus = WEXITSTATUS(*wstatus);
+	else if (WIFSIGNALED(*wstatus))
+		*wstatus = WTERMSIG(*wstatus) + 128;
 	exit(*wstatus);
 }

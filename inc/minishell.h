@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 20:00:32 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:16:32 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ void		wait_pid(int *pid, int *wstatus);
 int			*create_new_pid_list(t_piper *piper);
 void		end_pipe(t_command *command, char **m_envp,
 				t_piper *piper, int *wstatus);
-int			piper(t_command *command, char **m_envp, int *wstatus, t_command *p_command);
+int			piper(t_command *command, char **m_envp,
+				int *wstatus, t_command *p_command);
 
 /*Builtins*/
 void		ft_env(char **m_envp);
@@ -156,7 +157,8 @@ void		redir_heredoc(t_command *command, char **m_envp, int *wstatus);
 
 /*Signal*/
 void		singal_handler(int signal);
-int			init_receive_signal(struct sigaction *sa);
+int			init_receive_signal(struct sigaction *sa,
+				struct sigaction *sa_quit);
 int			init_child_signal(struct sigaction *sa);
 
 /*Free*/
@@ -170,6 +172,6 @@ void		free_single_command(t_command *command);
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);
 int			update_wstatus(char **m_envp, int *wstatus, int flag);
-void		minishell(t_mshell *m_shell);
+int			minishell(t_mshell *m_shell, int *wstatus);
 
 #endif

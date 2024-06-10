@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 19:57:00 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:15:40 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mshell			m_shell;
 	char				*m_envp[1000];
+	int					wstatus;
 	struct sigaction	sa;
+	struct sigaction	sa_quit;
 
+	wstatus = 0;
 	if (argc != 1)
 		return (printf("minishell: %s: no such file or directory\n", argv[1]),
 			127);
@@ -64,12 +67,12 @@ int	main(int argc, char **argv, char **envp)
 		fill_void_envp(m_envp);
 	else
 		envp_cpy(m_envp, envp);
-	if (!init_receive_signal(&sa))
+	if (!init_receive_signal(&sa, &sa_quit))
 		return (ft_free(NULL, NULL, m_envp, 1), 1);
 	m_shell.m_envp = m_envp;
 	m_shell.command = NULL;
 	m_shell.command = NULL;
 	m_shell.line = 0;
-	minishell(&m_shell);
+	minishell(&m_shell, &wstatus);
 	return (0);
 }

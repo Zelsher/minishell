@@ -46,7 +46,7 @@ all: 			$(NAME)
 
 bonus:			$(NAME)
 
-$(NAME): 		$(OBJ) $(LIBFT) $(INC)
+$(NAME): 		$(OBJ) $(LIBFT) $(INC) Makefile
 				@echo $(G)Compiling [$(SRC)]$(X) 
 				@$(CC) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 				@echo $(G)Compiling [$(NAME)]$(X) 

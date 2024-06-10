@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_filler.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/05/28 03:40:52 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:28:31 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,8 @@ int	arger(char *new_command, char *arg, char **m_envp)
 
 void	update_arg(t_command *command, t_parse *parse)
 {
-	if (!command->arg)
-	{
-		if (command->arg[parse->j])
-			free(command->arg[parse->j]);
+	if (!command->arg[parse->j])
 		command->arg[parse->j] = NULL;
-	}
 	else
 	{
 		parse->j++;
