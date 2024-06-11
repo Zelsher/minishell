@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 15:54:24 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 01:41:22 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 	int		flag;
 	char	*path;
 
-	if (!ft_strcmp(command->arg[0], "show")
-		|| !ft_strcmp(command->arg[0], "unshow"))
-		exit(0);
 	flag = 0;
 	path = pathfinder(command, m_envp, &flag);
 	if (path)

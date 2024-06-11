@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 16:17:14 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 01:49:03 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,7 @@ void		redir_input(t_command *command, char **m_envp, int *wstatus);
 void		redir_heredoc(t_command *command, char **m_envp, int *wstatus);
 
 /*Signal*/
-void		singal_handler(int signal);
-int			init_receive_signal(struct sigaction *sa,
-				struct sigaction *sa_quit);
-int			init_child_signal(struct sigaction *sa);
+int			init_signal(int mod);
 
 /*Free*/
 void		free_command(t_command *command);

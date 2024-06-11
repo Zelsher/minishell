@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:54:03 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 14:17:37 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:01:06 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	launch_pipe(t_command *command, t_piper *piper,
 {
 	t_command	*p_command_pipe;
 
+	init_signal(1);
 	free(piper->pid);
 	piper->new_pipe[0] = -1;
 	piper->new_pipe[1] = -1;
@@ -36,6 +37,7 @@ void	receive_pipe(t_command *command, t_piper *piper,
 {
 	t_command	*p_command_pipe;
 
+	init_signal(1);
 	free(piper->pid);
 	p_command_pipe = command->left;
 	ft_free(command->right, NULL, NULL, 0);
@@ -54,6 +56,7 @@ void	receive_pipe(t_command *command, t_piper *piper,
 void	close_pipe(t_command *command, t_piper *piper,
 	char **m_envp, int *wstatus)
 {
+	init_signal(1);
 	dup2(STDOUT_FILENO, STDOUT_FILENO);
 	free(piper->pid);
 	close(piper->pipe[1]);
@@ -97,10 +100,8 @@ int	pipe_manager(t_command *command, t_piper *piper,
 int	piper(t_command *command, char **m_envp, int *wstatus, t_command *p_command)
 {
 	t_piper				piper;
-	struct sigaction	sa;
 
-	if (!init_child_signal(&sa))
-		return (ft_free(NULL, NULL, m_envp, 1), 1);
+	init_signal(1);
 	piper.pid = NULL;
 	piper.i = 0;
 	if (command->token != '|')

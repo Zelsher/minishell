@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 15:47:30 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:11:06 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	end_pipe(t_command *command, char **m_envp,
 		close(piper->new_pipe[0]);
 	if (piper->new_pipe[1] != -1)
 		close(piper->new_pipe[1]);
+	printf("pid=%d\n", getpid());
 	wait_pid(piper->pid, wstatus);
 	free(piper->pid);
 	ft_free(command, NULL, m_envp, 0);
@@ -64,5 +65,6 @@ void	end_pipe(t_command *command, char **m_envp,
 		*wstatus = WEXITSTATUS(*wstatus);
 	else if (WIFSIGNALED(*wstatus))
 		*wstatus = WTERMSIG(*wstatus) + 128;
+	printf("OUI\n");
 	exit(*wstatus);
 }

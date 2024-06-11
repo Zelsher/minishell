@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 15:29:48 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 01:42:20 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ t_command	*cmd_parse(t_mshell *m_shell, char *new_command,
 
 	command = recurs_parse(m_shell, new_command, 0, 't');
 	free(new_command);
-	print_cmd(command, 0);
 	if (!command)
 		ft_free(command, NULL, m_envp, 1);
 	if (!cmd_verifier(command, wstatus))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 16:17:39 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:13:19 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	if (g_exec_pid < 0)
 	{
 		(*wstatus) = 130;
+		printf("\n");
 		ft_free(command, NULL, NULL, 0);
 		g_exec_pid = 0;
 		if (!update_wstatus(m_envp, wstatus, 0))
@@ -84,7 +85,6 @@ void	use_command(t_mshell *m_shell, char *new_command,
 
 	verif = 1;
 	command = cmd_parse(m_shell, new_command, m_envp, wstatus);
-	print_cmd(command, 0);
 	if (command && g_exec_pid == 0)
 	{
 		if (ft_builtins(command, wstatus, m_envp) != 0)
@@ -110,9 +110,9 @@ int	minishell(t_mshell *m_shell, int *wstatus)
 	while (1)
 	{
 		if (*wstatus)
-			m_shell->new_command = readline("\x1B[1;31m$\x1B[0m");
+			m_shell->new_command = readline("\x1B[1;31mminishell:\x1B[0m");
 		else
-			m_shell->new_command = readline("\x1B[1;32m$\x1B[0m");
+			m_shell->new_command = readline("\x1B[1;32mminishell:\x1B[0m");
 		if (g_exec_pid)
 		{
 			*wstatus = 130;

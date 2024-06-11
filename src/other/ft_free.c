@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 13:13:42 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/11 01:40:43 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,3 @@ void	ft_free(t_command *command, char *new_command,
 		exit(m_exit);
 }
 
-void	print_cmd(t_command *command, int a)
-{
-	static int	show;
-
-	if (!command)
-		return ;
-	if (command->arg[0] && !ft_strcmp(command->arg[0], "unshow"))
-		show = 0;
-	if (command->arg[0] && !ft_strcmp(command->arg[0], "show"))
-		show = 1;
-	(void)a;
-}
