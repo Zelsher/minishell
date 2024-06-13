@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 16:17:15 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:44:41 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_piper
 }					t_piper;
 
 extern int	g_exec_pid;
+
+void		ft_print_command_tree(t_command *command, char *branch, int i);
 
 /*Parsing_utils*/
 t_command	*cmd_construct(t_mshell *m_shell, char first_cmd);

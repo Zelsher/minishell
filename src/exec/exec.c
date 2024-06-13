@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 15:15:32 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:42:29 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_do_command(t_command *command, char **m_envp, int *wstatus)
 void	ft_exec(t_command *command, char **m_envp, int *wstatus)
 {
 	init_signal(1);
+	//printf("%c\n", command->token);
 	if (command->token == '<' || command->token == 'h')
 		redir_input(command, m_envp, wstatus);
 	else if (command->token == '>')

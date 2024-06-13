@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 16:57:54 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:45:24 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	pre_exec(t_command *command, char **m_envp, int *wstatus)
 {
 	int	pid;
 
-	if (command->token !='|')
+	if (command->token != '|')
 	{
 		pid = fork();
 		g_exec_pid = pid;
@@ -86,7 +86,6 @@ int	pre_exec(t_command *command, char **m_envp, int *wstatus)
 	}
 	else
 		piper(command, m_envp, wstatus);
-	//printf("wstatus:%d\n", *wstatus);
 	if (*wstatus < 0 && *wstatus == 2)
 		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid < 0)
@@ -131,7 +130,8 @@ int	minishell(t_mshell *m_shell, int *wstatus)
 {
 	while (1)
 	{
-		if (*wstatus)
+		//printf("[%s]\n", m_shell->m_envp[0]);
+		if (ft_atoi(m_shell->m_envp[0] + 3))
 			m_shell->new_command = readline("\x1B[1;31mminishell:\x1B[0m");
 		else
 			m_shell->new_command = readline("\x1B[1;32mminishell:\x1B[0m");

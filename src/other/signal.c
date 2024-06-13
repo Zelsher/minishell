@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 01:57:43 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 17:02:37 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:03:34 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	mshell_signal_handler(int signal)
 {
-	//printf("parent %d recoie %d\n", getpid(), signal);
-	if (signal == SIGINT && (!g_exec_pid || g_exec_pid == -2) )
+	if (signal == SIGINT && (!g_exec_pid || g_exec_pid == -2))
 	{
 		printf("\n");
 		rl_on_new_line();
@@ -30,7 +29,6 @@ void	mshell_signal_handler(int signal)
 
 void	child_signal_handler(int signal)
 {
-	//printf("child %d recoie %d\n", getpid(), signal);
 	if (signal == SIGQUIT)
 		exit (131);
 	if (signal == SIGINT)
@@ -40,7 +38,7 @@ void	child_signal_handler(int signal)
 
 int	init_signal(int mod)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	if (mod == 0)
 	{
@@ -52,7 +50,7 @@ int	init_signal(int mod)
 			return (0);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (mod == 1)
+	else if (mod == 1 || mod == 2)
 	{
 		sa.sa_handler = child_signal_handler;
 		sigemptyset(&sa.sa_mask);
@@ -61,6 +59,8 @@ int	init_signal(int mod)
 			return (0);
 		if (sigaction(SIGQUIT, &sa, NULL) == -1)
 			return (0);
+		if (mod == 2)
+			signal(SIGQUIT, SIG_IGN);
 	}
 	return (1);
 }

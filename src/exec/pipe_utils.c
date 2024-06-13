@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 16:24:03 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:47:52 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 void	wait_child(int pid, int *wstatus)
 {
-    while (1)
-    {
+	while (1)
+	{
 		if (waitpid(pid, wstatus, 0) == -1)
-        {
-            if (errno == EINTR)
-                continue;
-            else
-                break;
-        }
-        else
-            break;
+		{
+			if (errno != EINTR)
+				break ;
+		}
+		else
+			break ;
 	}
 }
 
@@ -51,7 +49,7 @@ int	*create_new_pid_list(t_piper *piper)
 		if (piper->pid)
 			free(piper->pid);
 		return (NULL);
-	}	
+	}
 	if (!piper->pid)
 	{
 		new_pid[1] = -1;

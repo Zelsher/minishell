@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 16:38:50 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:03:47 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	heredocker(t_mshell *m_shell, char *file_name, char *delimiter, int line)
 	char	*reader;
 	int		fd;
 
+	init_signal(2);
 	fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (free(file_name), -1);
@@ -63,6 +64,14 @@ int	heredocker(t_mshell *m_shell, char *file_name, char *delimiter, int line)
 	return (free(file_name), 1);
 }
 
+void	skip_delimiter(char *new_command, t_parse *parse)
+{
+	while (is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
+		parse->i++;
+	while (!is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
+		parse->i++;
+}
+
 int	heredoc(t_mshell *m_shell, t_command *command,
 	t_parse *parse, char *new_command)
 {
@@ -78,7 +87,6 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 		return (return_parse_error(command), 0);
 	if (g_exec_pid == 0)
 	{
-		init_signal(1);
 		free_command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
 			heredocker(m_shell, file_name,
@@ -90,5 +98,6 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 	if (g_exec_pid <= -1)
 		return (printf("\n"), return_parse_error(command), 0);
 	command->arg[0] = ft_strdup(command->heredoc);
-	return (1);
+	g_exec_pid = 0;
+	return (skip_delimiter(new_command, parse), 1);
 }

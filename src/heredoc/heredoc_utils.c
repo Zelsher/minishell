@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:18:59 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/08 17:40:30 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:42:54 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*find_delimiter(char *new_command, t_parse *parse)
 
 	parse->i = 0;
 	while (is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
-		parse->i += 1;
+		parse->i++;
 	p_delimiter = new_command + parse->i;
 	while (!is_in(new_command[parse->i], "\t\v\n\r ") && new_command[parse->i])
 		parse->i += 1;
