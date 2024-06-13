@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/11 01:49:03 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:17:15 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int			*create_new_pid_list(t_piper *piper);
 void		end_pipe(t_command *command, char **m_envp,
 				t_piper *piper, int *wstatus);
 int			piper(t_command *command, char **m_envp,
-				int *wstatus, t_command *p_command);
+				int *wstatus);
 
 /*Builtins*/
 int			change_pwd(char **m_envp);
@@ -167,6 +167,7 @@ void		return_parse_error(t_command *command);
 void		free_single_command(t_command *command);
 
 /*Minishell*/
+void		wait_child(int pid, int *wstatus);
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);
 int			update_wstatus(char **m_envp, int *wstatus, int flag);

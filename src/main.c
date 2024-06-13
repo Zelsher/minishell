@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/11 01:53:21 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 01:59:36 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ int	main(int argc, char **argv, char **envp)
 		fill_void_envp(m_envp);
 	else
 		envp_cpy(m_envp, envp);
-	if (!init_signal(0))
-		return (ft_free(NULL, NULL, m_envp, 1), 1);
+	init_signal(0);
 	m_shell.m_envp = m_envp;
 	m_shell.command = NULL;
 	m_shell.command = NULL;

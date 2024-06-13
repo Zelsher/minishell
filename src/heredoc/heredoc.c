@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:16:57 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/10 13:59:17 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:38:50 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ int	heredoc(t_mshell *m_shell, t_command *command,
 		return (return_parse_error(command), 0);
 	if (g_exec_pid == 0)
 	{
+		init_signal(1);
 		free_command(m_shell->command);
 		ft_free(command, NULL, m_shell->m_envp,
 			heredocker(m_shell, file_name,
 				find_delimiter(new_command, parse), 0));
 	}
-	waitpid(g_exec_pid, &verif, 0);
-	printf("%d\n", g_exec_pid);
+	wait_child(g_exec_pid, &verif);
 	if (verif != -1)
 		command->heredoc = file_name;
 	if (g_exec_pid <= -1)

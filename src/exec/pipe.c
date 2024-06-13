@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:54:03 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/11 02:01:06 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:17:01 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,13 @@ int	pipe_manager(t_command *command, t_piper *piper,
 	return (1);
 }
 
-int	piper(t_command *command, char **m_envp, int *wstatus, t_command *p_command)
+int	piper(t_command *command, char **m_envp, int *wstatus)
 {
-	t_piper				piper;
+	t_piper	piper;
 
-	init_signal(1);
 	piper.pid = NULL;
 	piper.i = 0;
-	if (command->token != '|')
-		ft_exec(command, m_envp, wstatus);
+	g_exec_pid = 1;
 	if (pipe(piper.pipe) < 0)
 		return (printerr(2, "minishell: ", " pipe has failed", 0),
 			ft_free(command, NULL, m_envp, -1), 1);
@@ -116,10 +114,7 @@ int	piper(t_command *command, char **m_envp, int *wstatus, t_command *p_command)
 			return (close(piper.pipe[0]), close(piper.pipe[1]), 1);
 		if (!pipe_manager(command, &piper, m_envp, wstatus))
 			break ;
-		ft_free(command->left, NULL, NULL, 0);
-		p_command = command->right;
-		free_single_command(command);
-		command = p_command;
+		command = command->right;
 	}
 	return (end_pipe(command, m_envp, &piper, wstatus), 1);
 }

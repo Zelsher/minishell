@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/11 02:13:19 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:57:54 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	update_wstatus(char **m_envp, int *wstatus, int flag)
 	}
 	m_envp[0][2 + i] = '\0';
 	free(char_wstatus);
+	*wstatus = 0;
 	return (1);
 }
 
@@ -48,33 +49,54 @@ int	ft_builtins(t_command *command, int *wstatus, char **m_envp)
 	return (1);
 }
 
-void	pre_exec(t_command *command, char **m_envp, int *wstatus)
+void	update_ctrlc(t_command *command, char **m_envp, int *wstatus)
+{
+	if (*wstatus == -23)//trouver en cas dexecutable qui se termine pas a un ctrlc
+		return ;
+	(*wstatus) = 130;
+	printf("\n");
+	ft_free(command, NULL, NULL, 0);
+	g_exec_pid = 0;
+	if (!update_wstatus(m_envp, wstatus, 0))
+		ft_free(command, NULL, m_envp, 1);
+}
+
+void	update_ctrl_slash(t_command *command, char **m_envp, int *wstatus)
+{
+	ft_free(command, NULL, NULL, 0);
+	g_exec_pid = 0;
+	printf("Quit(core dumped)\n");
+	if (!update_wstatus(m_envp, wstatus, 0))
+		ft_free(command, NULL, m_envp, 1);
+}
+
+int	pre_exec(t_command *command, char **m_envp, int *wstatus)
 {
 	int	pid;
 
-	pid = fork();
-	g_exec_pid = pid;
-	if (pid == -1)
-		ft_free(command, NULL, m_envp, 1);
-	if (pid == 0)
-		piper(command, m_envp, wstatus, command);
-	waitpid(pid, wstatus, 0);
-	if (*wstatus < 0)
+	if (command->token !='|')
+	{
+		pid = fork();
+		g_exec_pid = pid;
+		if (pid == -1)
+			ft_free(command, NULL, m_envp, 1);
+		if (pid == 0)
+			ft_exec(command, m_envp, wstatus);
+		wait_child(pid, wstatus);
+	}
+	else
+		piper(command, m_envp, wstatus);
+	//printf("wstatus:%d\n", *wstatus);
+	if (*wstatus < 0 && *wstatus == 2)
 		ft_free(command, NULL, m_envp, 1);
 	if (g_exec_pid < 0)
-	{
-		(*wstatus) = 130;
-		printf("\n");
-		ft_free(command, NULL, NULL, 0);
-		g_exec_pid = 0;
-		if (!update_wstatus(m_envp, wstatus, 0))
-			ft_free(command, NULL, m_envp, 1);
-		return ;
-	}
+		return (update_ctrlc(command, m_envp, wstatus), 1);
+	else if (*wstatus == 131)
+		return (update_ctrl_slash(command, m_envp, wstatus), 1);
 	g_exec_pid = 0;
-	ft_free(command, NULL, NULL, 0);
 	if (!update_wstatus(m_envp, wstatus, 1))
 		ft_free(command, NULL, m_envp, 1);
+	return (ft_free(command, NULL, NULL, 0), 1);
 }
 
 void	use_command(t_mshell *m_shell, char *new_command,
@@ -102,7 +124,7 @@ void	use_command(t_mshell *m_shell, char *new_command,
 	}
 	ft_free(command, NULL, NULL, 0);
 	if (!verif)
-		exit(1);
+		ft_free(NULL, NULL, m_envp, 1);
 }
 
 int	minishell(t_mshell *m_shell, int *wstatus)
@@ -113,7 +135,7 @@ int	minishell(t_mshell *m_shell, int *wstatus)
 			m_shell->new_command = readline("\x1B[1;31mminishell:\x1B[0m");
 		else
 			m_shell->new_command = readline("\x1B[1;32mminishell:\x1B[0m");
-		if (g_exec_pid)
+		if (g_exec_pid < 0)
 		{
 			*wstatus = 130;
 			if (!update_wstatus(m_shell->m_envp, wstatus, 0))

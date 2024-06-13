@@ -6,11 +6,27 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:37:05 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/11 02:11:06 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:24:03 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	wait_child(int pid, int *wstatus)
+{
+    while (1)
+    {
+		if (waitpid(pid, wstatus, 0) == -1)
+        {
+            if (errno == EINTR)
+                continue;
+            else
+                break;
+        }
+        else
+            break;
+	}
+}
 
 void	wait_pid(int *pid, int *wstatus)
 {
@@ -19,7 +35,7 @@ void	wait_pid(int *pid, int *wstatus)
 	i = 0;
 	while (pid[i] != -1)
 	{
-		waitpid(pid[i], wstatus, 0);
+		wait_child(pid[i], wstatus);
 		i++;
 	}
 }
@@ -31,7 +47,11 @@ int	*create_new_pid_list(t_piper *piper)
 
 	new_pid = malloc(sizeof(int) * (piper->i + 2));
 	if (!new_pid)
+	{
+		if (piper->pid)
+			free(piper->pid);
 		return (NULL);
+	}	
 	if (!piper->pid)
 	{
 		new_pid[1] = -1;
@@ -57,14 +77,12 @@ void	end_pipe(t_command *command, char **m_envp,
 		close(piper->new_pipe[0]);
 	if (piper->new_pipe[1] != -1)
 		close(piper->new_pipe[1]);
-	printf("pid=%d\n", getpid());
 	wait_pid(piper->pid, wstatus);
 	free(piper->pid);
-	ft_free(command, NULL, m_envp, 0);
 	if (WIFEXITED(*wstatus))
 		*wstatus = WEXITSTATUS(*wstatus);
 	else if (WIFSIGNALED(*wstatus))
 		*wstatus = WTERMSIG(*wstatus) + 128;
-	printf("OUI\n");
-	exit(*wstatus);
+	(void)command;
+	(void)m_envp;
 }
