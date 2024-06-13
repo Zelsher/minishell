@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:54:03 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 16:17:01 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:34:42 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	launch_pipe(t_command *command, t_piper *piper,
 	dup2(piper->pipe[1], STDOUT_FILENO);
 	dup2(piper->pipe[1], STDERR_FILENO);
 	close(piper->pipe[1]);
-	ft_exec(p_command_pipe, m_envp, wstatus);
+	exec(p_command_pipe, m_envp, wstatus);
 	exit(*wstatus);
 }
 
@@ -49,7 +49,7 @@ void	receive_pipe(t_command *command, t_piper *piper,
 	dup2(piper->new_pipe[1], STDOUT_FILENO);
 	dup2(piper->new_pipe[1], STDERR_FILENO);
 	close(piper->new_pipe[1]);
-	ft_exec(p_command_pipe, m_envp, wstatus);
+	exec(p_command_pipe, m_envp, wstatus);
 	exit(*wstatus);
 }
 
@@ -64,7 +64,7 @@ void	close_pipe(t_command *command, t_piper *piper,
 	close(piper->new_pipe[0]);
 	dup2(piper->pipe[0], STDIN_FILENO);
 	close(piper->pipe[0]);
-	ft_exec(command, m_envp, wstatus);
+	exec(command, m_envp, wstatus);
 	exit(*wstatus);
 }
 

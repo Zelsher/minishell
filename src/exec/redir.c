@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:59:54 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 19:53:41 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:34:27 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	redir_output_append(t_command *command, char **m_envp, int *wstatus)
 	if (fd < 0)
 		exit(1);
 	dup2(fd, STDOUT_FILENO);
-	ft_exec(command->left, m_envp, wstatus);
+	exec(command->left, m_envp, wstatus);
 }
 
 void	redir_output(t_command *command, char **m_envp, int *wstatus)
@@ -43,7 +43,7 @@ void	redir_output(t_command *command, char **m_envp, int *wstatus)
 	if (fd < 0)
 		exit(1);
 	dup2(fd, STDOUT_FILENO);
-	ft_exec(command->left, m_envp, wstatus);
+	exec(command->left, m_envp, wstatus);
 }
 
 void	redir_input(t_command *command, char **m_envp, int *wstatus)
@@ -54,7 +54,7 @@ void	redir_input(t_command *command, char **m_envp, int *wstatus)
 	if (fd < 0)
 		ft_free(command, NULL, m_envp, 1);
 	dup2(fd, STDIN_FILENO);
-	ft_exec(command->left, m_envp, wstatus);
+	exec(command->left, m_envp, wstatus);
 }
 
 void	redir_heredoc(t_command *command, char **m_envp, int *wstatus)
@@ -65,5 +65,5 @@ void	redir_heredoc(t_command *command, char **m_envp, int *wstatus)
 	if (fd < 0)
 		ft_free(command, NULL, m_envp, 1);
 	dup2(fd, STDIN_FILENO);
-	ft_exec(command->left, m_envp, wstatus);
+	exec(command->left, m_envp, wstatus);
 }

@@ -6,7 +6,7 @@
 /*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:56:25 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 19:44:41 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:34:05 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,13 @@ int			heredoc(t_mshell *m_shell, t_command *command,
 int			is_last_cmd(const char *new_command);
 void		print_history(void);
 
-/*exec*/
-void		ft_exec(t_command *command, char **envp, int *wstatus);
+/*Update*/
+int			update_wstatus(char **m_envp, int *wstatus, int flag);
+void		update_ctrlc(t_command *command, char **m_envp, int *wstatus);
+void		update_ctrl_slash(t_command *command, char **m_envp, int *wstatus);
+
+/*Exec*/
+void		exec(t_command *command, char **envp, int *wstatus);
 void		wait_pid(int *pid, int *wstatus);
 int			*create_new_pid_list(t_piper *piper);
 void		end_pipe(t_command *command, char **m_envp,
@@ -172,7 +177,6 @@ void		free_single_command(t_command *command);
 void		wait_child(int pid, int *wstatus);
 int			ft_builtins(t_command *command, int *wstatus, char **m_envp);
 void		printerr(int fd, char *name, const char *error, int flag);
-int			update_wstatus(char **m_envp, int *wstatus, int flag);
 int			minishell(t_mshell *m_shell, int *wstatus);
 
 #endif

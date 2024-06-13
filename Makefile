@@ -16,6 +16,7 @@ RM				= rm -f
 
 SRC				=	$(SRC_DIR)main.c \
 					$(SRC_DIR)minishell.c \
+					$(SRC_DIR)$(SRC_OTHER)update.c \
 					$(SRC_DIR)$(SRC_OTHER)ft_free.c \
 					$(SRC_DIR)$(SRC_OTHER)signal.c \
 					$(SRC_DIR)$(SRC_OTHER)history.c \
