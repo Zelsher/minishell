@@ -8,7 +8,7 @@ SRC_OTHER		= other/
 SRC_EXEC		= exec/
 SRC_ENVP		= envp/
 OBJ_DIR			= obj/
-LIBFT			= Libft/libft.a
+LIBFT			= inc/Libft/libft.a
 
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g3 -I $(INC)
@@ -52,9 +52,11 @@ $(NAME): 		$(OBJ) $(LIBFT) $(INC) Makefile
 				@$(CC) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 				@echo $(G)Compiling [$(NAME)]$(X) 
 
-$(LIBFT)	:
-				@echo $(G)Compiling [LIBFT]$(X) 
-				@make -s -C Libft
+$(LIBFT):
+				@if [ ! -f $(LIBFT) ]; then \
+					echo $(G)Compiling [LIBFT]$(X); \
+					make -s -C $(INC)/Libft; \
+				fi
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 				@mkdir -p $(@D)
@@ -63,13 +65,13 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 clean:
 				@echo $(G)delete [$(OBJ)]$(X) 
 				@$(RM) -r $(OBJ_DIR)
-				@make clean -s -C Libft
+				@make clean -s -C $(INC)/Libft
 
 fclean: 		clean
 				@echo $(G)delete [$(NAME)]$(X)	
 				@$(RM) $(NAME)
 				@echo $(G)delete [LIBFT]$(X)
-				@make fclean -s -C Libft
+				@make fclean -s -C $(INC)/Libft
 
 re: 			fclean all
 
