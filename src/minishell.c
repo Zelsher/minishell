@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 23:34:58 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:08:46 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	pre_exec(t_command *command, char **m_envp, int *wstatus)
 		piper(command, m_envp, wstatus);
 	if (*wstatus < 0 && *wstatus == 2)
 		ft_free(command, NULL, m_envp, 1);
-	if (g_exec_pid < 0)
+	//printf("status %d\n", *wstatus);
+	if (g_exec_pid < 0 && *wstatus == 2)
 		return (update_ctrlc(command, m_envp, wstatus), 1);
 	else if (*wstatus == 131)
 		return (update_ctrl_slash(command, m_envp, wstatus), 1);

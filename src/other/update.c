@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 23:32:19 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 23:33:36 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:18:07 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int	update_wstatus(char **m_envp, int *wstatus, int flag)
 
 void	update_ctrlc(t_command *command, char **m_envp, int *wstatus)
 {
-	if (*wstatus == -23)//trouver en cas dexecutable qui se termine pas a un ctrlc
-		return ;
 	(*wstatus) = 130;
 	printf("\n");
 	ft_free(command, NULL, NULL, 0);
