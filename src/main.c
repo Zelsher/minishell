@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eboumaza <eboumaza.trav@gmail.com>         +#+  +:+       +#+        */
+/*   By: eboumaza <eboumaza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 12:00:00 by eboumaza          #+#    #+#             */
-/*   Updated: 2024/06/13 01:59:36 by eboumaza         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:57:23 by eboumaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,29 @@ void	envp_cpy(char **m_envp, char **envp)
 		ft_free(NULL, NULL, m_envp, 1);
 }
 
-void	fill_void_envp(char **m_envp)
+int	fill_void_envp(char **m_envp)
 {
+	char	buffer[2048];
+
+	printf("jfill\n");
 	m_envp[0] = malloc(sizeof(char) * 6);
 	if (!m_envp[0])
 		exit(1);
 	ft_strcpy(m_envp[0], "?=0");
-	m_envp[1] = NULL;
+	getcwd(buffer, 2048);
+	m_envp[1] = ft_strjoin("PWD=", buffer);
+	if (!m_envp[1])
+		return (free(m_envp[0]), exit(1), 1);
+	m_envp[2] = ft_strdup("SHLVL=1");
+	if (!m_envp[2])
+		return (free(m_envp[0]), free(m_envp[1]), exit(1), 1);
+	m_envp[3] = ft_strdup("_=/usr/bin/env");
+	if (!m_envp[3])
+		return (free(m_envp[0]), free(m_envp[1]), free(m_envp[2]),
+			exit(1), 1);
+	m_envp[4] = NULL;
+	printf("fin\n");
+	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
